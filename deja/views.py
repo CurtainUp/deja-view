@@ -34,7 +34,7 @@ def register_user(request):
             # Update our variable to tell the template registration was successful.
             registered = True
 
-        return login_url(request)
+        return login_user(request)
 
     elif request.method == 'GET':
         user_form = UserForm()
@@ -49,11 +49,12 @@ def login_user(request):
 
     # If the request is a HTTP POST, try to pull out the relevant information.
     if request.method == 'POST':
+        print(request.POST)
 
         # Use the built-in authenticate method to verify
-        email = request.POST['email']
+        username = request.POST['username']
         password = request.POST['password']
-        authenticated_user = authenticate(email=email, password=password)
+        authenticated_user = authenticate(username=username, password=password)
 
         # If authentication was successful, log the user in
         if authenticated_user is not None:
@@ -66,7 +67,7 @@ def login_user(request):
 
         else:
             # Bad login details were provided. User cannot be logged in
-            print("Invalid login details: (), ()".format(email, password))
+            print("Invalid login details: {}, {}".format(username, password))
 
     return render(request, 'login.html', context)
 

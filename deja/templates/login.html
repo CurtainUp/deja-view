@@ -5,7 +5,7 @@
 
     <form id="login_form" method="post" action="{% url 'deja:login' %}">
         {% csrf_token %}
-        E-Mail: <input type="text" name="email" value="" size="50" />
+        Username: <input type="text" name="username" value="" size="50" />
         <br />
         Password: <input type="password" name="password" value="" size="50" />
         <br />
