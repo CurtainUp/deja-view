@@ -1,0 +1,12 @@
+html {
+    height: 100%;
+}
+
+body {
+    background-repeat: no-repeat;
+    background: radial-gradient(purple, rgb(128, 130, 128));
+}
+
+.container {
+    max-width: 100%;
+}
