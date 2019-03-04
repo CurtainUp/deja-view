@@ -79,3 +79,9 @@ def logout_user(request):
 
     # Take the user back to the homepage.
     return HttpResponseRedirect("/")
+
+def deja(request):
+    return render(request, "deja.html")
+
+def history(request):
+    return render(request, "history.html")

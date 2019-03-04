@@ -4,7 +4,9 @@ html {
 
 body {
     background-repeat: no-repeat;
-    background: radial-gradient(purple, rgb(128, 130, 128));
+    background-color: teal;
+    /* color: rgb(21, 36, 36) */
+    /* background: radial-gradient(purple, rgb(128, 130, 128)); */
 }
 
 .container {

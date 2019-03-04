@@ -22,6 +22,8 @@
             </h1>
 
         {% if user.is_authenticated %}
+            <div><a href="{% url 'deja:deja' %}">Deja</div>
+            <div><a href="{% url 'deja:history' %}">History</div>
             <div><a href="{% url 'deja:logout' %}">Logout</a></div>
         {% else %}
             <div><a href="{% url 'deja:login' %}">Login</a></div>
