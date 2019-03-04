@@ -16,6 +16,9 @@
 
 <body>
     <div class="container">
+        <nav>
+            <a class="navbar-brand" href="{% url 'deja:index' %}">dejaView</a>
+        </nav>
         {% block content %}
             <h1>Welcome to Deja View! You are {% if user.is_authenticated %} logged in! {% else %} not logged in!
                 {% endif %}
