@@ -59,7 +59,6 @@
             var thisref = storageRef.child(file.name).put(file);
 
             thisref.on('state_changed', function (snapshot) {
-                console.log("File uploaded successfully");
             },
 
                 function (error) {
@@ -68,7 +67,6 @@
                     // Upload completed successfully, now we can get the download URL
                     var downloadURL = thisref.snapshot.ref.getDownloadURL().then(function (downloadURL) {
                         console.log('File available at', downloadURL);
-                    console.log("got url");
                     alert("File uploaded successfully")
                     });
 
