@@ -21,21 +21,61 @@
             ">dejaView</a>
         </nav>
         {% block content %}
-            <h1>Welcome to Deja View! You are {% if user.is_authenticated %} logged in! {% else %} not logged in!
-                {% endif %}
-            </h1>
+        <h1>Welcome to Deja View! You are {% if user.is_authenticated %} logged in! {% else %} not logged in!
+            {% endif %}
+        </h1>
 
         {% if user.is_authenticated %}
-            <div><a href="{% url 'deja:deja' %}">Deja</div>
-            <div><a href="{% url 'deja:history' %}">History</div>
-            <div><a href="{% url 'deja:logout' %}">Logout</a></div>
+        <div><a href="{% url 'deja:deja' %}">Deja</div>
+        <div><a href="{% url 'deja:history' %}">History</div>
+        <div><a href="{% url 'deja:logout' %}">Logout</a></div>
         {% else %}
-            <div><a href="{% url 'deja:login' %}">Login</a></div>
-            <div><a href="{% url 'deja:register' %}">Register</a></div>
+        <div><a href="{% url 'deja:login' %}">Login</a></div>
+        <div><a href="{% url 'deja:register' %}">Register</a></div>
         {% endif %}
 
         {% endblock content %}
     </div>
+    <script src="https://www.gstatic.com/firebasejs/5.8.5/firebase.js"></script>
+    <script>
+        var config = {
+            apiKey: "AIzaSyAAw5FV9aw2OJBCMwLV8TVIJemk0dTQR38",
+            authDomain: "dejaview-d81e4.firebaseapp.com",
+            databaseURL: "https://dejaview-d81e4.firebaseio.com",
+            projectId: "dejaview-d81e4",
+            storageBucket: "dejaview-d81e4.appspot.com",
+            messagingSenderId: "39327407953"
+        };
+        firebase.initializeApp(config);
+
+        // Get a reference to the storage service, which is used to create references in your storage bucket
+        function uploadimage() {
+
+            var storage = firebase.storage();
+            var file = document.getElementById("image").files[0];
+            // Reference to Firebase Storage
+            var storageRef = storage.ref();
+
+            var thisref = storageRef.child(file.name).put(file);
+
+            thisref.on('state_changed', function (snapshot) {
+                console.log("File uploaded successfully");
+            },
+
+                function (error) {
+
+                }, function () {
+                    // Upload completed successfully, now we can get the download URL
+                    var downloadURL = thisref.snapshot.ref.getDownloadURL().then(function (downloadURL) {
+                        console.log('File available at', downloadURL);
+                    console.log("got url");
+                    alert("File uploaded successfully")
+                    });
+
+                });
+        }
+
+    </script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>

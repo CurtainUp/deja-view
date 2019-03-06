@@ -7,6 +7,18 @@ from deja.forms import *
 from deja.models import *
 # from django.conf import settings
 # from django.core.files.storage import FileSystemStorage
+import pyrebase
+
+config = {
+    "apiKey": "AIzaSyAAw5FV9aw2OJBCMwLV8TVIJemk0dTQR38",
+    "authDomain": "dejaview-d81e4.firebaseapp.com",
+    "databaseURL": "https://dejaview-d81e4.firebaseio.com",
+    "projectId": "dejaview-d81e4",
+    "storageBucket": "dejaview-d81e4.appspot.com",
+    "messagingSenderId": "39327407953"
+}
+
+firebase = pyrebase.initialize_app(config)
 
 # Create your views here.
 def index(request):
