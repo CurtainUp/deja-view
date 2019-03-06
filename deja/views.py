@@ -5,6 +5,8 @@ from django.shortcuts import render
 from django.template import RequestContext
 from deja.forms import *
 from deja.models import *
+# from django.conf import settings
+# from django.core.files.storage import FileSystemStorage
 
 # Create your views here.
 def index(request):
@@ -81,6 +83,12 @@ def logout_user(request):
     return HttpResponseRedirect("/")
 
 def deja(request):
+
+# DJANGO FILE SYSTEM STORAGE WAY TO UPLOAD
+    # if request.method == 'POST':
+    #     uploaded_file = request.FILES["image"]
+    #     fs = FileSystemStorage()
+    #     fs.save(uploaded_file.name, uploaded_file)
     return render(request, "deja.html")
 
 def history(request):

@@ -2,5 +2,9 @@
 
 {% block content %}
 <h1>Deja</h1>
-<div>UPLOAD BUTTON</div>
+<form method="post" enctype="multipart/form-data">
+{% csrf_token %}
+<input type="file" name="image">
+<button type="submit">DEJA</button>
+</form>
 {% endblock content %}
