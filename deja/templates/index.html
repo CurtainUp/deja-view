@@ -17,8 +17,9 @@
 <body>
     <div class="container">
         <nav>
-            <a class="navbar-brand" href="{% url 'deja:index' %}
-            ">dejaView</a>
+            <a class="navbar-brand" href="{% url 'deja:index' %}">
+                dejaView
+            </a>
         </nav>
         {% block content %}
         <h1>Welcome to Deja View! You are {% if user.is_authenticated %} logged in! {% else %} not logged in!
@@ -36,6 +37,7 @@
 
         {% endblock content %}
     </div>
+    <!-- Script that connects page to Firebase -->
     <script src="https://www.gstatic.com/firebasejs/5.8.5/firebase.js"></script>
     <script>
         var config = {
@@ -50,7 +52,7 @@
 
         // Get a reference to the storage service, which is used to create references in your storage bucket
         function uploadimage() {
-
+            // TODO: Change vars to lets and consts
             var storage = firebase.storage();
             var file = document.getElementById("image").files[0];
             // Reference to Firebase Storage
@@ -67,7 +69,8 @@
                     // Upload completed successfully, now we can get the download URL
                     var downloadURL = thisref.snapshot.ref.getDownloadURL().then(function (downloadURL) {
                         console.log('File available at', downloadURL);
-                    alert("File uploaded successfully")
+                    alert("File uploaded successfully");
+                    return document.getElementById("url").value = downloadURL;
                     });
 
                 });

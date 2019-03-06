@@ -1,12 +1,10 @@
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect, Http404
-from django.shortcuts import render
+from django.shortcuts import render, reverse
 from django.template import RequestContext
 from deja.forms import *
 from deja.models import *
-# from django.conf import settings
-# from django.core.files.storage import FileSystemStorage
 import pyrebase
 
 config = {
@@ -95,13 +93,23 @@ def logout_user(request):
     return HttpResponseRedirect("/")
 
 def deja(request):
+    ''' Creates an instance of a Deja in database upon clicking "Deja" '''
+    current_user = request.user
 
-# DJANGO FILE SYSTEM STORAGE WAY TO UPLOAD
-    # if request.method == 'POST':
-    #     uploaded_file = request.FILES["image"]
-    #     fs = FileSystemStorage()
-    #     fs.save(uploaded_file.name, uploaded_file)
+    if request.method == 'POST':
+        img_url = request.POST["url"]
+        user = User.objects.get(pk=current_user.id)
+
+        new_deja = Deja(img_url=img_url, user=user)
+        new_deja.save()
+
+        return HttpResponseRedirect(reverse('deja:deja_results'))
+
     return render(request, "deja.html")
+
+def deja_results(request):
+
+    return render(request, "deja_results.html")
 
 def history(request):
     return render(request, "history.html")
