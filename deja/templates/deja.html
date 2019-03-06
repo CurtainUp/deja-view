@@ -1,1 +1,12 @@
+{% extends 'index.html' %}
+
+{% block content %}
 <h1>Deja</h1>
+<form method="post" enctype="multipart/form-data">
+{% csrf_token %}
+<input type="file" name="image" id="image">
+<button type="button" onclick="uploadimage()">Upload</button>
+<br />
+<input type="submit" value="DEJA">
+</form>
+{% endblock content %}

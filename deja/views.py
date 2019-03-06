@@ -5,6 +5,20 @@ from django.shortcuts import render
 from django.template import RequestContext
 from deja.forms import *
 from deja.models import *
+# from django.conf import settings
+# from django.core.files.storage import FileSystemStorage
+import pyrebase
+
+config = {
+    "apiKey": "AIzaSyAAw5FV9aw2OJBCMwLV8TVIJemk0dTQR38",
+    "authDomain": "dejaview-d81e4.firebaseapp.com",
+    "databaseURL": "https://dejaview-d81e4.firebaseio.com",
+    "projectId": "dejaview-d81e4",
+    "storageBucket": "dejaview-d81e4.appspot.com",
+    "messagingSenderId": "39327407953"
+}
+
+firebase = pyrebase.initialize_app(config)
 
 # Create your views here.
 def index(request):
@@ -81,6 +95,12 @@ def logout_user(request):
     return HttpResponseRedirect("/")
 
 def deja(request):
+
+# DJANGO FILE SYSTEM STORAGE WAY TO UPLOAD
+    # if request.method == 'POST':
+    #     uploaded_file = request.FILES["image"]
+    #     fs = FileSystemStorage()
+    #     fs.save(uploaded_file.name, uploaded_file)
     return render(request, "deja.html")
 
 def history(request):
