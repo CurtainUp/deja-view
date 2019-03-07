@@ -117,6 +117,17 @@ def deja_results(request):
     # Submits url to Sight Engine API
     results = get_celebs(uploaded_img)
 
+    if results:
+        for celeb in results:
+            deja = Deja.objects.get(pk=Deja.objects.latest('created').id)
+            name = celeb['name']
+            probability = celeb['prob']
+
+            new_result = Result(deja=deja, name=name, probability=probability)
+            print(new_result)
+            new_result.save()
+            print("Result saved!")
+
     return render(request, "deja_results.html", {'results': results, 'uploaded_img': uploaded_img})
 
 def history(request):

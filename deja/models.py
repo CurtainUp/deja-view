@@ -15,8 +15,7 @@ class Deja(models.Model):
 
 class Result(models.Model):
     '''A returned facial match'''
-    first_name = models.CharField(max_length=100, blank=False)
-    last_name = models.CharField(max_length=100, blank=False)
+    name = models.CharField(max_length=100, blank=False)
     probability = models.FloatField(blank=False)
     deja = models.ForeignKey(Deja, on_delete=models.CASCADE)
 
