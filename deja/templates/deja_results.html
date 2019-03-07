@@ -7,13 +7,14 @@
 {% for celeb in results %}
 <form method="post">
 {% csrf_token %}
-<button type="submit"><li>Name: {{ celeb.name }}</li></button>
+<button type="submit">{{ celeb.name }} {% widthratio celeb.prob 1 100 %}%</button>
 <input type="hidden" name="celeb_name" value="{{celeb.name}}">
 <input type="hidden" name="result_load">
 </form>
-<li>Probability: {% widthratio celeb.prob 1 100 %}%</li>
 <br />
 {% endfor %}
+
+
 </ul>
 
 {% endblock content %}

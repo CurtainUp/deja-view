@@ -114,27 +114,29 @@ def deja(request):
     return render(request, "deja.html")
 
 def deja_results(request):
+    ''' View for user to view Actor matches and view that performer's most recent projects '''
+
     if request.method == 'POST':
+        # "result_load" is a hidden input tag that appears upon page load to differentiate the Deja POST that loads this page, and the "filmography" affordance
         if "result_load" in request.POST:
             celeb_name = request.POST["celeb_name"]
 
-            # IMDPy fetch for last 10 Films
+            # IMDPy fetch for result's filmography
             ia = imdb.IMDb()
             celeb = ia.search_person(celeb_name)
             celebID = celeb[0].personID
             person = ia.get_person(celebID)
             filmography = person['filmography']
 
-            # Returns url of actor headshot!
-            headshot = person['headshot']
-
+            # Reduce list to most recent 10 entries to pass to template
             most_recent = []
 
             for value in filmography[0].values():
                 for film in value[:10]:
                     most_recent.append(film)
 
-            print("Most recent: ", most_recent)
+            # Returns url of actor headshot!
+            headshot = person['headshot']
 
             return render(request, "films.html", {'headshot': headshot, 'most_recent': most_recent, 'celeb_name': celeb_name})
 
@@ -151,9 +153,7 @@ def deja_results(request):
                     probability = celeb['prob']
 
                     new_result = Result(deja=deja, name=name, probability=probability)
-                    print(new_result)
                     new_result.save()
-                    print("Result saved!")
 
                 return render(request, "deja_results.html", {'results': results, 'uploaded_img': uploaded_img})
 
