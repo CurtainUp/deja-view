@@ -22,7 +22,7 @@ class Result(models.Model):
     def __str__(self):
         '''string method that returns name and probability of result'''
 
-        return (f"{self.first_name} {self.last_name} is a {self.probability} match.")
+        return (f"{self.name} is a {self.probability} match.")
 
 # class Filmography(models.Model):
 #     '''An instance of a match's film appearances'''
