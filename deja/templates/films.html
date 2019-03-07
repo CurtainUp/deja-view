@@ -1,0 +1,11 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<h1>Filmography of {{ celeb_name }}</h1>
+
+{% for film in most_recent %}
+<li>{{ film.title }}</li>
+{% endfor %}
+
+
+{% endblock content %}
