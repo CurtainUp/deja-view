@@ -2,12 +2,12 @@ from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render
+from django.urls import reverse
 from django.template import RequestContext
 from deja.forms import *
 from deja.models import *
-# from django.conf import settings
-# from django.core.files.storage import FileSystemStorage
 import pyrebase
+from deja.api.sightengine import get_celebs
 
 config = {
     "apiKey": "AIzaSyAAw5FV9aw2OJBCMwLV8TVIJemk0dTQR38",
@@ -95,13 +95,29 @@ def logout_user(request):
     return HttpResponseRedirect("/")
 
 def deja(request):
+    ''' View for user to create a Deja '''
 
-# DJANGO FILE SYSTEM STORAGE WAY TO UPLOAD
-    # if request.method == 'POST':
-    #     uploaded_file = request.FILES["image"]
-    #     fs = FileSystemStorage()
-    #     fs.save(uploaded_file.name, uploaded_file)
+    # Creates an instance of a Deja in database upon clicking "Deja"
+    current_user = request.user
+
+    if request.method == 'POST':
+        img_url = request.POST["url"]
+        user = User.objects.get(pk=current_user.id)
+
+        new_deja = Deja(img_url=img_url, user=user)
+        new_deja.save()
+
+        return HttpResponseRedirect(reverse('deja:deja_results'))
+
     return render(request, "deja.html")
+
+def deja_results(request):
+    # Stores the url of the most recently uploaded image
+    uploaded_img = Deja.objects.latest('created').img_url
+    # Submits url to Sight Engine API
+    results = get_celebs(uploaded_img)
+
+    return render(request, "deja_results.html", {'results': results, 'uploaded_img': uploaded_img})
 
 def history(request):
     return render(request, "history.html")

@@ -1,0 +1,14 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<h1>Deja Results</h1>
+<img src="{{ uploaded_img }}"></img>
+<ul>
+{% for celeb in results %}
+<li>Name: {{ celeb.name }}</li>
+<li>Probability: {% widthratio celeb.prob 1 100 %}%</li>
+<br />
+{% endfor %}
+</ul>
+
+{% endblock content %}

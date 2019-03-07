@@ -5,6 +5,7 @@
 <form method="post" enctype="multipart/form-data">
 {% csrf_token %}
 <input type="file" name="image" id="image">
+<input type="hidden" name="url" id="url">
 <button type="button" onclick="uploadimage()">Upload</button>
 <br />
 <input type="submit" value="DEJA">
