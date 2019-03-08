@@ -4,6 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.urls import reverse
 from django.template import RequestContext
+from django.contrib import messages
 from deja.forms import *
 from deja.models import *
 import pyrebase
@@ -180,6 +181,9 @@ def note(request, deja_id):
         if note:
             note.text = request.POST['text']
             note.save()
+            print("Note updated!")
+
+            messages.success(request, "Note saved")
 
         else:
             text = request.POST['text']
@@ -188,6 +192,8 @@ def note(request, deja_id):
             new_note = Note(text=text, deja=deja)
             new_note.save()
             print("Note saved!")
+
+            messages.success(request, "Note saved")
 
         return HttpResponseRedirect(reverse("deja:deja_results", args=(deja_id,)))
 
