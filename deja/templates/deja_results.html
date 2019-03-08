@@ -2,19 +2,20 @@
 
 {% block content %}
 <h1>Deja Results</h1>
-<img src="{{ uploaded_img }}"></img>
+<img src="{{ uploaded_img }}" alt="Your uploaded image"></img>
+
 <ul>
 {% for celeb in results %}
 <form method="post">
 {% csrf_token %}
-<button type="submit">{{ celeb.name }} {% widthratio celeb.prob 1 100 %}%</button>
-<input type="hidden" name="celeb_name" value="{{celeb.name}}">
-<input type="hidden" name="result_load">
+<button type="submit" name="celeb_name" value="{{celeb.name}}">{{ celeb.name }} {% widthratio celeb.prob 1 100 %}%</button>
 </form>
 <br />
 {% endfor %}
-
-
 </ul>
+<form method="post">
+{% csrf_token %}
+<button type="submit" name="note" value="note"><i class="fas fa-pencil-alt"></i></button>
+</form>
 
 {% endblock content %}

@@ -108,8 +108,10 @@ def deja(request):
 
         new_deja = Deja(img_url=img_url, user=user)
         new_deja.save()
+        print("Deja saved: ", img_url)
 
         return HttpResponseRedirect(reverse('deja:deja_results'))
+        # return render(request, "deja_results.html")
 
     return render(request, "deja.html")
 
@@ -118,7 +120,10 @@ def deja_results(request):
 
     if request.method == 'POST':
         # "result_load" is a hidden input tag that appears upon page load to differentiate the Deja POST that loads this page, and the "filmography" affordance
-        if "result_load" in request.POST:
+        # if "result_load" in request.POST:
+        print(request.POST)
+
+        if request.POST.get("celeb_name"):
             celeb_name = request.POST["celeb_name"]
 
             # IMDPy fetch for result's filmography
@@ -140,22 +145,26 @@ def deja_results(request):
 
             return render(request, "films.html", {'headshot': headshot, 'most_recent': most_recent, 'celeb_name': celeb_name})
 
-        else:
-            # Stores the url of the most recently uploaded image
-            uploaded_img = Deja.objects.latest('created').img_url
-            # Submits url to Sight Engine API
-            results = get_celebs(uploaded_img)
+        elif request.POST.get("note"):
+            print("Note clicked")
+            return render(request, "note/note.html")
 
-            if results:
-                for celeb in results:
-                    deja = Deja.objects.get(pk=Deja.objects.latest('created').id)
-                    name = celeb['name']
-                    probability = celeb['prob']
+    else:
+        # Stores the url of the most recently uploaded image
+        uploaded_img = Deja.objects.latest('created').img_url
+        # Submits url to Sight Engine API
+        results = get_celebs(uploaded_img)
 
-                    new_result = Result(deja=deja, name=name, probability=probability)
-                    new_result.save()
+        if results:
+            for celeb in results:
+                deja = Deja.objects.get(pk=Deja.objects.latest('created').id)
+                name = celeb['name']
+                probability = celeb['prob']
 
-                return render(request, "deja_results.html", {'results': results, 'uploaded_img': uploaded_img})
+                new_result = Result(deja=deja, name=name, probability=probability)
+                new_result.save()
+
+            return render(request, "deja_results.html", {'results': results, 'uploaded_img': uploaded_img})
 
 
 def history(request):
