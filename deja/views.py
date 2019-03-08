@@ -110,18 +110,14 @@ def deja(request):
         new_deja.save()
         print("Deja saved: ", img_url)
 
-        return HttpResponseRedirect(reverse('deja:deja_results'))
-        # return render(request, "deja_results.html")
+        return HttpResponseRedirect(reverse('deja:deja_results', args=(new_deja.id,)))
 
     return render(request, "deja.html")
 
-def deja_results(request):
+def deja_results(request, deja_id):
     ''' View for user to view Actor matches and view that performer's most recent projects '''
 
     if request.method == 'POST':
-        # "result_load" is a hidden input tag that appears upon page load to differentiate the Deja POST that loads this page, and the "filmography" affordance
-        # if "result_load" in request.POST:
-        print(request.POST)
 
         if request.POST.get("celeb_name"):
             celeb_name = request.POST["celeb_name"]
@@ -146,12 +142,11 @@ def deja_results(request):
             return render(request, "films.html", {'headshot': headshot, 'most_recent': most_recent, 'celeb_name': celeb_name})
 
         elif request.POST.get("note"):
-            print("Note clicked")
-            return render(request, "note/note.html")
+            return HttpResponseRedirect(reverse("deja:note", args=(deja_id,)))
 
     else:
         # Stores the url of the most recently uploaded image
-        uploaded_img = Deja.objects.latest('created').img_url
+        uploaded_img = Deja.objects.get(pk=deja_id).img_url
         # Submits url to Sight Engine API
         results = get_celebs(uploaded_img)
 
@@ -166,6 +161,32 @@ def deja_results(request):
 
             return render(request, "deja_results.html", {'results': results, 'uploaded_img': uploaded_img})
 
+def note(request, deja_id):
+    note = Note.objects.get(deja_id=deja_id)
+
+    if note:
+        original_note = {'text': note.text}
+        note_form = NoteForm(initial=original_note)
+
+    else:
+        note_form = NoteForm()
+
+    if request.method == 'POST':
+        if note:
+            note.text = request.POST['text']
+            note.save()
+
+        else:
+            text = request.POST['text']
+            deja = Deja.objects.get(pk=deja_id)
+
+            new_note = Note(text=text, deja=deja)
+            new_note.save()
+            print("Note saved!")
+
+        return HttpResponseRedirect(reverse("deja:deja_results", args=(deja_id,)))
+
+    return render(request, "note/note.html", {'note_form': note_form})
 
 def history(request):
     return render(request, "history.html")
