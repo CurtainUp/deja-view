@@ -1,20 +1,33 @@
 {% extends 'index.html' %}
 
 {% block content %}
+
+{% if messages %}
+<div class="messages">
+    {% for message in messages %}
+    <div {% if message.tags %} class="alert alert-{{ message.tags }}" {% endif %}>
+            <strong>{{ message }}</strong>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
 <h1>Deja Results</h1>
-<img src="{{ uploaded_img }}"></img>
+<img src="{{ uploaded_img }}" alt="Your uploaded image"></img>
+
 <ul>
 {% for celeb in results %}
 <form method="post">
 {% csrf_token %}
-<button type="submit">{{ celeb.name }} {% widthratio celeb.prob 1 100 %}%</button>
-<input type="hidden" name="celeb_name" value="{{celeb.name}}">
-<input type="hidden" name="result_load">
+<button type="submit" name="celeb_name" value="{{celeb.name}}">{{ celeb.name }} {% widthratio celeb.prob 1 100 %}%</button>
 </form>
 <br />
 {% endfor %}
-
-
 </ul>
+<form method="post">
+{% csrf_token %}
+<button type="submit" name="note" value="note"><i class="fas fa-pencil-alt"></i></button>
+<button type="submit" name="save_deja" value="save_deja"><i class="fas fa-save"></i></i></button>
+</form>
 
 {% endblock content %}

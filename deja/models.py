@@ -39,7 +39,7 @@ class Result(models.Model):
 class Note(models.Model):
     '''A note attached to a Deja'''
     text = models.TextField(blank=True)
-    deja = models.ForeignKey(Deja, on_delete=models.CASCADE)
+    deja = models.OneToOneField(Deja, on_delete=models.CASCADE)
 
     def __str__(self):
         '''string method that returns text value'''

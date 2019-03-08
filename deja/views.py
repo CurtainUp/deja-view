@@ -4,6 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.urls import reverse
 from django.template import RequestContext
+from django.contrib import messages
 from deja.forms import *
 from deja.models import *
 import pyrebase
@@ -109,16 +110,21 @@ def deja(request):
         new_deja = Deja(img_url=img_url, user=user)
         new_deja.save()
 
-        return HttpResponseRedirect(reverse('deja:deja_results'))
+        return HttpResponseRedirect(reverse('deja:deja_results', args=(new_deja.id,)))
 
     return render(request, "deja.html")
 
-def deja_results(request):
+def deja_results(request, deja_id):
     ''' View for user to view Actor matches and view that performer's most recent projects '''
 
+    # Stores the url of the most recently uploaded image
+    uploaded_img = Deja.objects.get(pk=deja_id).img_url
+    # Submits url to Sight Engine API
+    results = get_celebs(uploaded_img)
+
     if request.method == 'POST':
-        # "result_load" is a hidden input tag that appears upon page load to differentiate the Deja POST that loads this page, and the "filmography" affordance
-        if "result_load" in request.POST:
+
+        if request.POST.get("celeb_name"):
             celeb_name = request.POST["celeb_name"]
 
             # IMDPy fetch for result's filmography
@@ -140,12 +146,11 @@ def deja_results(request):
 
             return render(request, "films.html", {'headshot': headshot, 'most_recent': most_recent, 'celeb_name': celeb_name})
 
-        else:
-            # Stores the url of the most recently uploaded image
-            uploaded_img = Deja.objects.latest('created').img_url
-            # Submits url to Sight Engine API
-            results = get_celebs(uploaded_img)
+        elif request.POST.get("note"):
+            return HttpResponseRedirect(reverse("deja:note", args=(deja_id,)))
 
+        elif request.POST.get("save_deja"):
+            print("Save clicked")
             if results:
                 for celeb in results:
                     deja = Deja.objects.get(pk=Deja.objects.latest('created').id)
@@ -154,9 +159,45 @@ def deja_results(request):
 
                     new_result = Result(deja=deja, name=name, probability=probability)
                     new_result.save()
+                    print("Deja saved!")
+                return render(request, "index.html")
 
-                return render(request, "deja_results.html", {'results': results, 'uploaded_img': uploaded_img})
+    else:
 
+        return render(request, "deja_results.html", {'results': results, 'uploaded_img': uploaded_img})
+
+def note(request, deja_id):
+    note = Note.objects.filter(deja_id=deja_id).exists()
+
+    if note:
+        note = Note.objects.get(deja_id=deja_id)
+        original_note = {'text': note.text}
+        note_form = NoteForm(initial=original_note)
+
+    else:
+        note_form = NoteForm()
+
+    if request.method == 'POST':
+        if note:
+            note.text = request.POST['text']
+            note.save()
+            print("Note updated!")
+
+            messages.success(request, "Note saved")
+
+        else:
+            text = request.POST['text']
+            deja = Deja.objects.get(pk=deja_id)
+
+            new_note = Note(text=text, deja=deja)
+            new_note.save()
+            print("Note saved!")
+
+            messages.success(request, "Note saved")
+
+        return HttpResponseRedirect(reverse("deja:deja_results", args=(deja_id,)))
+
+    return render(request, "note/note.html", {'note_form': note_form})
 
 def history(request):
     return render(request, "history.html")

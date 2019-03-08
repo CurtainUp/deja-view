@@ -2,7 +2,7 @@
 
 {% block content %}
 <h1>Filmography of {{ celeb_name }}</h1>
-<img src="{{ headshot }}">
+<img src="{{ headshot }}" alt="{{celeb_name}}'s headshot">
 
 {% for film in most_recent %}
 <li>{{ film.title }}</li>

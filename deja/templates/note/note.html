@@ -1,0 +1,11 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<h1>Add a note</h1>
+<form action="{% url 'deja:note' request.resolver_match.kwargs.deja_id %}"  method=post>
+    {% csrf_token %}
+    {{ note_form.as_p }}
+    <input type="submit" value="Save Note" />
+</form>
+
+{% endblock content %}

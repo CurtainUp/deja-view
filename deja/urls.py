@@ -9,5 +9,6 @@ urlpatterns = [
     path('register', views.register_user, name='register'),
     path('history', views.history, name='history'),
     path('deja', views.deja, name='deja'),
-    path('deja_results', views.deja_results, name='deja_results'),
+    path('deja_results/<int:deja_id>', views.deja_results, name='deja_results'),
+    path('note/<int:deja_id>', views.note, name='note')
 ]
