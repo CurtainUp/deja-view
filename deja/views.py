@@ -108,7 +108,6 @@ def deja(request):
 
         new_deja = Deja(img_url=img_url, user=user)
         new_deja.save()
-        print("Deja saved: ", img_url)
 
         return HttpResponseRedirect(reverse('deja:deja_results', args=(new_deja.id,)))
 
@@ -116,6 +115,11 @@ def deja(request):
 
 def deja_results(request, deja_id):
     ''' View for user to view Actor matches and view that performer's most recent projects '''
+
+    # Stores the url of the most recently uploaded image
+    uploaded_img = Deja.objects.get(pk=deja_id).img_url
+    # Submits url to Sight Engine API
+    results = get_celebs(uploaded_img)
 
     if request.method == 'POST':
 
@@ -144,27 +148,28 @@ def deja_results(request, deja_id):
         elif request.POST.get("note"):
             return HttpResponseRedirect(reverse("deja:note", args=(deja_id,)))
 
+        elif request.POST.get("save_deja"):
+            print("Save clicked")
+            if results:
+                for celeb in results:
+                    deja = Deja.objects.get(pk=Deja.objects.latest('created').id)
+                    name = celeb['name']
+                    probability = celeb['prob']
+
+                    new_result = Result(deja=deja, name=name, probability=probability)
+                    new_result.save()
+                    print("Deja saved!")
+                return render(request, "index.html")
+
     else:
-        # Stores the url of the most recently uploaded image
-        uploaded_img = Deja.objects.get(pk=deja_id).img_url
-        # Submits url to Sight Engine API
-        results = get_celebs(uploaded_img)
 
-        if results:
-            for celeb in results:
-                deja = Deja.objects.get(pk=Deja.objects.latest('created').id)
-                name = celeb['name']
-                probability = celeb['prob']
-
-                new_result = Result(deja=deja, name=name, probability=probability)
-                new_result.save()
-
-            return render(request, "deja_results.html", {'results': results, 'uploaded_img': uploaded_img})
+        return render(request, "deja_results.html", {'results': results, 'uploaded_img': uploaded_img})
 
 def note(request, deja_id):
-    note = Note.objects.get(deja_id=deja_id)
+    note = Note.objects.filter(deja_id=deja_id).exists()
 
     if note:
+        note = Note.objects.get(deja_id=deja_id)
         original_note = {'text': note.text}
         note_form = NoteForm(initial=original_note)
 
