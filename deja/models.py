@@ -15,15 +15,14 @@ class Deja(models.Model):
 
 class Result(models.Model):
     '''A returned facial match'''
-    first_name = models.CharField(max_length=100, blank=False)
-    last_name = models.CharField(max_length=100, blank=False)
+    name = models.CharField(max_length=100, blank=False)
     probability = models.FloatField(blank=False)
     deja = models.ForeignKey(Deja, on_delete=models.CASCADE)
 
     def __str__(self):
         '''string method that returns name and probability of result'''
 
-        return (f"{self.first_name} {self.last_name} is a {self.probability} match.")
+        return (f"{self.name} is a {self.probability} match.")
 
 # class Filmography(models.Model):
 #     '''An instance of a match's film appearances'''

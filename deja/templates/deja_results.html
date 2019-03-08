@@ -5,10 +5,16 @@
 <img src="{{ uploaded_img }}"></img>
 <ul>
 {% for celeb in results %}
-<li>Name: {{ celeb.name }}</li>
-<li>Probability: {% widthratio celeb.prob 1 100 %}%</li>
+<form method="post">
+{% csrf_token %}
+<button type="submit">{{ celeb.name }} {% widthratio celeb.prob 1 100 %}%</button>
+<input type="hidden" name="celeb_name" value="{{celeb.name}}">
+<input type="hidden" name="result_load">
+</form>
 <br />
 {% endfor %}
+
+
 </ul>
 
 {% endblock content %}

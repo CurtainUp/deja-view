@@ -8,6 +8,8 @@ from deja.forms import *
 from deja.models import *
 import pyrebase
 from deja.api.sightengine import get_celebs
+import imdb
+from imdb.Person import Person
 
 config = {
     "apiKey": "AIzaSyAAw5FV9aw2OJBCMwLV8TVIJemk0dTQR38",
@@ -112,12 +114,49 @@ def deja(request):
     return render(request, "deja.html")
 
 def deja_results(request):
-    # Stores the url of the most recently uploaded image
-    uploaded_img = Deja.objects.latest('created').img_url
-    # Submits url to Sight Engine API
-    results = get_celebs(uploaded_img)
+    ''' View for user to view Actor matches and view that performer's most recent projects '''
 
-    return render(request, "deja_results.html", {'results': results, 'uploaded_img': uploaded_img})
+    if request.method == 'POST':
+        # "result_load" is a hidden input tag that appears upon page load to differentiate the Deja POST that loads this page, and the "filmography" affordance
+        if "result_load" in request.POST:
+            celeb_name = request.POST["celeb_name"]
+
+            # IMDPy fetch for result's filmography
+            ia = imdb.IMDb()
+            celeb = ia.search_person(celeb_name)
+            celebID = celeb[0].personID
+            person = ia.get_person(celebID)
+            filmography = person['filmography']
+
+            # Reduce list to most recent 10 entries to pass to template
+            most_recent = []
+
+            for value in filmography[0].values():
+                for film in value[:10]:
+                    most_recent.append(film)
+
+            # Returns url of actor headshot!
+            headshot = person['headshot']
+
+            return render(request, "films.html", {'headshot': headshot, 'most_recent': most_recent, 'celeb_name': celeb_name})
+
+        else:
+            # Stores the url of the most recently uploaded image
+            uploaded_img = Deja.objects.latest('created').img_url
+            # Submits url to Sight Engine API
+            results = get_celebs(uploaded_img)
+
+            if results:
+                for celeb in results:
+                    deja = Deja.objects.get(pk=Deja.objects.latest('created').id)
+                    name = celeb['name']
+                    probability = celeb['prob']
+
+                    new_result = Result(deja=deja, name=name, probability=probability)
+                    new_result.save()
+
+                return render(request, "deja_results.html", {'results': results, 'uploaded_img': uploaded_img})
+
 
 def history(request):
     return render(request, "history.html")
