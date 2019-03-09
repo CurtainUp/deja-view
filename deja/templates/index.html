@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Deja View</title>
+    <title>dejaView</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css"
@@ -22,7 +22,7 @@
             </a>
         </nav>
         {% block content %}
-        <h1>Welcome to Deja View! You are {% if user.is_authenticated %} logged in! {% else %} not logged in!
+        <h1>{% if user.is_authenticated %} dejaView {% else %} dejaView</h1><h1>login or create an account to begin
             {% endif %}
         </h1>
 

@@ -97,6 +97,7 @@ def logout_user(request):
     # Take the user back to the homepage.
     return HttpResponseRedirect("/")
 
+@login_required
 def deja(request):
     ''' View for user to create a Deja '''
 
@@ -114,6 +115,7 @@ def deja(request):
 
     return render(request, "deja.html")
 
+@login_required
 def deja_results(request, deja_id):
     ''' View for user to view Actor matches and view that performer's most recent projects '''
 
@@ -166,7 +168,9 @@ def deja_results(request, deja_id):
 
         return render(request, "deja_results.html", {'results': results, 'uploaded_img': uploaded_img})
 
+@login_required
 def note(request, deja_id):
+    '''View to create or edit a note attached to a Deja'''
     note = Note.objects.filter(deja_id=deja_id).exists()
 
     if note:
@@ -199,5 +203,18 @@ def note(request, deja_id):
 
     return render(request, "note/note.html", {'note_form': note_form})
 
+@login_required
 def history(request):
-    return render(request, "history.html")
+    '''View of a user's created Dejas'''
+    current_user = request.user
+    # Grabs all dejas created by the current user
+    dejas = Deja.objects.filter(user_id=current_user.id).order_by('-id')
+
+    # Get highest probability match for alt tag
+
+    if request.method == 'POST':
+        # Pulls the clicked deja's id to pass to deja_results view
+        deja_id = request.POST['deja']
+        return HttpResponseRedirect(reverse("deja:deja_results", args=(deja_id)))
+
+    return render(request, "history.html", {'dejas': dejas})
