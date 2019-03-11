@@ -3,6 +3,16 @@
 {% block content %}
 <h1>History</h1>
 
+{% if messages %}
+<div class="messages">
+    {% for message in messages %}
+    <div {% if message.tags %} class="alert alert-{{ message.tags }}" {% endif %}>
+            <strong>{{ message }}</strong>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
 {% for deja in dejas %}
 <div class="container-fluid" id="deja-history">
     <div class="row" id="deja-history">
@@ -10,6 +20,7 @@
         {% csrf_token %}
         <button type="submit" name="deja" class="btn deja-history" id="deja-history" value="{{deja.id}}">
                 <img src="{{deja.img_url}}" id="deja-history" alt="{{deja.id}}">
+                <button type="submit" name="delete" value={{deja.id}}>Delete</button>
         </button>
         </form>
     </div>
