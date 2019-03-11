@@ -21,6 +21,17 @@
                 dejaView
             </a>
         </nav>
+
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+            <div {% if message.tags %} class="alert alert-{{ message.tags }}" {% endif %}>
+                    <strong>{{ message }}</strong>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
         {% block content %}
         <h1>{% if user.is_authenticated %} dejaView {% else %} dejaView</h1><h1>login or create an account to begin
             {% endif %}

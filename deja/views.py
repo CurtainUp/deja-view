@@ -160,15 +160,15 @@ def deja_results(request, deja_id):
 
                     new_result = Result(deja=deja, name=name, probability=probability)
                     new_result.save()
-                    print("Deja saved!")
-                return render(request, "index.html")
+                    messages.success(request, "Deja Saved")
+                return HttpResponseRedirect(reverse("deja:index"))
 
         elif request.POST.get('delete'):
             deja_id = request.POST['delete']
             deja = Deja.objects.get(pk=deja_id)
             deja.delete()
-            messages.success(request, "Deja Deleted!")
-            return render(request, "index.html")
+            messages.success(request, "Deja Deleted")
+            return HttpResponseRedirect(reverse("deja:index"))
 
     else:
 
@@ -193,7 +193,7 @@ def note(request, deja_id):
             note.save()
             print("Note updated!")
 
-            messages.success(request, "Note saved")
+            messages.success(request, "Note Updated")
 
         else:
             text = request.POST['text']
@@ -203,7 +203,7 @@ def note(request, deja_id):
             new_note.save()
             print("Note saved!")
 
-            messages.success(request, "Note saved")
+            messages.success(request, "Note Saved")
 
         return HttpResponseRedirect(reverse("deja:deja_results", args=(deja_id,)))
 
@@ -227,7 +227,7 @@ def history(request):
             deja_id = request.POST['delete']
             deja = Deja.objects.get(pk=deja_id)
             deja.delete()
-            messages.success(request, "Deja Deleted!")
+            messages.success(request, "Deja Deleted")
             return HttpResponseRedirect(reverse('deja:history'))
 
     return render(request, "history.html", {'dejas': dejas})
