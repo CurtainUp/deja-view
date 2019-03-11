@@ -163,9 +163,16 @@ def deja_results(request, deja_id):
                     print("Deja saved!")
                 return render(request, "index.html")
 
+        elif request.POST.get('delete'):
+            deja_id = request.POST['delete']
+            deja = Deja.objects.get(pk=deja_id)
+            deja.delete()
+            messages.success(request, "Deja Deleted!")
+            return render(request, "index.html")
+
     else:
 
-        return render(request, "deja_results.html", {'results': results, 'uploaded_img': uploaded_img})
+        return render(request, "deja_results.html", {'results': results, 'uploaded_img': uploaded_img, 'deja_id': deja_id})
 
 @login_required
 def note(request, deja_id):
@@ -216,7 +223,7 @@ def history(request):
         if request.POST.get('deja'):
             deja_id = request.POST['deja']
             return HttpResponseRedirect(reverse("deja:deja_results", args=(deja_id,)))
-        if request.POST.get('delete'):
+        elif request.POST.get('delete'):
             deja_id = request.POST['delete']
             deja = Deja.objects.get(pk=deja_id)
             deja.delete()
