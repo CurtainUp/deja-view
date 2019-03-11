@@ -1,7 +1,7 @@
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect, Http404
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.template import RequestContext
 from django.contrib import messages
@@ -152,7 +152,6 @@ def deja_results(request, deja_id):
             return HttpResponseRedirect(reverse("deja:note", args=(deja_id,)))
 
         elif request.POST.get("save_deja"):
-            print("Save clicked")
             if results:
                 for celeb in results:
                     deja = Deja.objects.get(pk=Deja.objects.latest('created').id)
@@ -161,12 +160,19 @@ def deja_results(request, deja_id):
 
                     new_result = Result(deja=deja, name=name, probability=probability)
                     new_result.save()
-                    print("Deja saved!")
-                return render(request, "index.html")
+                    messages.success(request, "Deja Saved")
+                return HttpResponseRedirect(reverse("deja:index"))
+
+        elif request.POST.get('delete'):
+            deja_id = request.POST['delete']
+            deja = Deja.objects.get(pk=deja_id)
+            deja.delete()
+            messages.success(request, "Deja Deleted")
+            return HttpResponseRedirect(reverse("deja:index"))
 
     else:
 
-        return render(request, "deja_results.html", {'results': results, 'uploaded_img': uploaded_img})
+        return render(request, "deja_results.html", {'results': results, 'uploaded_img': uploaded_img, 'deja_id': deja_id})
 
 @login_required
 def note(request, deja_id):
@@ -187,7 +193,7 @@ def note(request, deja_id):
             note.save()
             print("Note updated!")
 
-            messages.success(request, "Note saved")
+            messages.success(request, "Note Updated")
 
         else:
             text = request.POST['text']
@@ -197,7 +203,7 @@ def note(request, deja_id):
             new_note.save()
             print("Note saved!")
 
-            messages.success(request, "Note saved")
+            messages.success(request, "Note Saved")
 
         return HttpResponseRedirect(reverse("deja:deja_results", args=(deja_id,)))
 
@@ -214,7 +220,14 @@ def history(request):
 
     if request.method == 'POST':
         # Pulls the clicked deja's id to pass to deja_results view
-        deja_id = request.POST['deja']
-        return HttpResponseRedirect(reverse("deja:deja_results", args=(deja_id,)))
+        if request.POST.get('deja'):
+            deja_id = request.POST['deja']
+            return HttpResponseRedirect(reverse("deja:deja_results", args=(deja_id,)))
+        elif request.POST.get('delete'):
+            deja_id = request.POST['delete']
+            deja = Deja.objects.get(pk=deja_id)
+            deja.delete()
+            messages.success(request, "Deja Deleted")
+            return HttpResponseRedirect(reverse('deja:history'))
 
     return render(request, "history.html", {'dejas': dejas})
