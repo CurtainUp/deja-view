@@ -135,6 +135,7 @@ def deja_results(request, deja_id):
             celebID = celeb[0].personID
             person = ia.get_person(celebID)
             filmography = person['filmography']
+            print(filmography)
 
             # Reduce list to most recent 10 entries to pass to template
             most_recent = []
@@ -144,7 +145,16 @@ def deja_results(request, deja_id):
                     most_recent.append(film)
 
             # Returns url of actor headshot!
-            headshot = person['headshot']
+            no_headshot = "No headshot available"
+            headshot = person.get('headshot', no_headshot)
+
+            # if person['headshot']:
+            #     headshot = person['headshot']
+            #     return headshot
+
+            # else:
+            #     headshot = "No headshot available"
+            #     return headshot
 
             return render(request, "films.html", {'headshot': headshot, 'most_recent': most_recent, 'celeb_name': celeb_name})
 
@@ -160,7 +170,7 @@ def deja_results(request, deja_id):
 
                     new_result = Result(deja=deja, name=name, probability=probability)
                     new_result.save()
-                    messages.success(request, "Deja Saved")
+                messages.success(request, "Deja Saved")
                 return HttpResponseRedirect(reverse("deja:index"))
 
         elif request.POST.get('delete'):
@@ -184,18 +194,18 @@ def note(request, deja_id):
         original_note = {'text': note.text}
         note_form = NoteForm(initial=original_note)
 
-    else:
-        note_form = NoteForm()
-
-    if request.method == 'POST':
-        if note:
+        if request.method == 'POST':
             note.text = request.POST['text']
             note.save()
             print("Note updated!")
 
             messages.success(request, "Note Updated")
+            return HttpResponseRedirect(reverse("deja:deja_results", args=(deja_id,)))
 
-        else:
+    else:
+        note_form = NoteForm()
+
+        if request.method == 'POST':
             text = request.POST['text']
             deja = Deja.objects.get(pk=deja_id)
 
@@ -205,7 +215,7 @@ def note(request, deja_id):
 
             messages.success(request, "Note Saved")
 
-        return HttpResponseRedirect(reverse("deja:deja_results", args=(deja_id,)))
+            return HttpResponseRedirect(reverse("deja:deja_results", args=(deja_id,)))
 
     return render(request, "note/note.html", {'note_form': note_form})
 
