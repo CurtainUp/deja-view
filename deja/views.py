@@ -215,6 +215,6 @@ def history(request):
     if request.method == 'POST':
         # Pulls the clicked deja's id to pass to deja_results view
         deja_id = request.POST['deja']
-        return HttpResponseRedirect(reverse("deja:deja_results", args=(deja_id)))
+        return HttpResponseRedirect(reverse("deja:deja_results", args=(deja_id,)))
 
     return render(request, "history.html", {'dejas': dejas})
