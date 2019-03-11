@@ -135,6 +135,7 @@ def deja_results(request, deja_id):
             celebID = celeb[0].personID
             person = ia.get_person(celebID)
             filmography = person['filmography']
+            print(filmography)
 
             # Reduce list to most recent 10 entries to pass to template
             most_recent = []
@@ -144,7 +145,16 @@ def deja_results(request, deja_id):
                     most_recent.append(film)
 
             # Returns url of actor headshot!
-            headshot = person['headshot']
+            no_headshot = "No headshot available"
+            headshot = person.get('headshot', no_headshot)
+
+            # if person['headshot']:
+            #     headshot = person['headshot']
+            #     return headshot
+
+            # else:
+            #     headshot = "No headshot available"
+            #     return headshot
 
             return render(request, "films.html", {'headshot': headshot, 'most_recent': most_recent, 'celeb_name': celeb_name})
 
@@ -160,7 +170,7 @@ def deja_results(request, deja_id):
 
                     new_result = Result(deja=deja, name=name, probability=probability)
                     new_result.save()
-                    messages.success(request, "Deja Saved")
+                messages.success(request, "Deja Saved")
                 return HttpResponseRedirect(reverse("deja:index"))
 
         elif request.POST.get('delete'):
@@ -177,35 +187,42 @@ def deja_results(request, deja_id):
 @login_required
 def note(request, deja_id):
     '''View to create or edit a note attached to a Deja'''
+    # Call to database to see if a note is already attached to the current Deja
     note = Note.objects.filter(deja_id=deja_id).exists()
 
     if note:
+        # If note exists, grab the note object
         note = Note.objects.get(deja_id=deja_id)
-        original_note = {'text': note.text}
-        note_form = NoteForm(initial=original_note)
+        # Grab the note text
+        current_note = {'text': note.text}
+        # Pre-populate the Note Form with the current note's text
+        note_form = NoteForm(initial=current_note)
 
-    else:
-        note_form = NoteForm()
-
-    if request.method == 'POST':
-        if note:
+        # When the user clicks save
+        if request.method == 'POST':
+            # Grab the updated text & save it
             note.text = request.POST['text']
             note.save()
-            print("Note updated!")
 
+            # Create confirmation note for user
             messages.success(request, "Note Updated")
+            return HttpResponseRedirect(reverse("deja:deja_results", args=(deja_id,)))
 
-        else:
+    else:
+        # Load the empty Note Form
+        note_form = NoteForm()
+
+        # When the user clicks save
+        if request.method == 'POST':
+            # Grab the note's text & save it to the corresponding Deja
             text = request.POST['text']
             deja = Deja.objects.get(pk=deja_id)
-
             new_note = Note(text=text, deja=deja)
             new_note.save()
-            print("Note saved!")
 
+            # Create confirmation note for user
             messages.success(request, "Note Saved")
-
-        return HttpResponseRedirect(reverse("deja:deja_results", args=(deja_id,)))
+            return HttpResponseRedirect(reverse("deja:deja_results", args=(deja_id,)))
 
     return render(request, "note/note.html", {'note_form': note_form})
 

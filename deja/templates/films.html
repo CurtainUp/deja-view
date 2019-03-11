@@ -2,7 +2,11 @@
 
 {% block content %}
 <h1>Filmography of {{ celeb_name }}</h1>
+
+{% if headshot == "No headshot available" %}
+{% else %}
 <img src="{{ headshot }}" alt="{{celeb_name}}'s headshot">
+{% endif %}
 
 {% for film in most_recent %}
 <li>{{ film.title }}</li>
