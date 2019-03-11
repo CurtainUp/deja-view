@@ -7,5 +7,5 @@
     {{ note_form.as_p }}
     <input type="submit" value="Save Note" />
 </form>
-
+<a href="{{request.META.HTTP_REFERER}}"><button>Cancel</button></a>
 {% endblock content %}
