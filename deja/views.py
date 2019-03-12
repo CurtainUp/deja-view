@@ -146,7 +146,7 @@ def deja_results(request, deja_id):
 
             # Returns url of actor headshot!
             no_headshot = "No headshot available"
-            headshot = person.get('headshot', no_headshot)
+            headshot = person.get('full-size headshot', no_headshot)
 
             # if person['headshot']:
             #     headshot = person['headshot']

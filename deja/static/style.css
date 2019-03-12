@@ -17,6 +17,9 @@ img {
     max-width: 100%;
 }
 
+li {
+    list-style-type: none;
+}
 
 /* DEJA HISTORY STYLING */
 
@@ -41,6 +44,27 @@ img {
     max-width: 100%;
 }
 
-
-
 /* END DEJA HISTORY STYLING */
+
+/* DEJA RESULT STYLING */
+
+@media(max-width: 768px) {
+    button.full-width {
+        width: 100%;
+    }
+}
+
+/* END DEJA RESULT STYLING */
+
+/* FILMOGRAPHY STYLING */
+
+.btn-secondary {
+    background-color: rgb(27, 49, 49) !important;
+}
+
+/* Resizes and centers full-size headshot */
+.headshot {
+    max-width: 50%;
+    display: block;
+    margin: 0 auto;
+}

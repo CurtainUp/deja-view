@@ -5,11 +5,12 @@
 
 {% if headshot == "No headshot available" %}
 {% else %}
-<img src="{{ headshot }}" alt="{{celeb_name}}'s headshot">
+<img src="{{ headshot }}" class="headshot" alt="{{celeb_name}}'s headshot">
 {% endif %}
 
+<h6>Click the checkboxes to add a title to your watchlist</h6>
 {% for film in most_recent %}
-<li>{{ film.title }}</li>
+<li><input type="checkbox">  {{ film.title }}</li>
 {% endfor %}
 
 
