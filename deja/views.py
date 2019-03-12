@@ -135,26 +135,33 @@ def deja_results(request, deja_id):
             celebID = celeb[0].personID
             person = ia.get_person(celebID)
             filmography = person['filmography']
-            print(filmography)
+            # print(filmography)
 
             # Reduce list to most recent 10 entries to pass to template
             most_recent = []
 
             for value in filmography[0].values():
-                for film in value[:10]:
-                    most_recent.append(film)
+                for film in value:
+                    if len(most_recent) < 10:
+                        # print(dir(film))
+                        movieID = film.getID()
+                        movie = ia.get_movie(movieID)
+                        # print(movie.infoset2keys)
 
-            # Returns url of actor headshot!
+                        if movie.get('cover url'):
+                            most_recent.append(film)
+                        # print("URL: ", ia.get_imdbURL(movie))
+                        # IMDB url format
+                        # http://www.imdb.com/title/tt3215824/
+                        # Grab first 10 with cover urls
+
+                        # print(film.get_fullsizeURL())
+
+
+
+            # Returns url of actor headshot OR default message if none available!
             no_headshot = "No headshot available"
             headshot = person.get('full-size headshot', no_headshot)
-
-            # if person['headshot']:
-            #     headshot = person['headshot']
-            #     return headshot
-
-            # else:
-            #     headshot = "No headshot available"
-            #     return headshot
 
             return render(request, "films.html", {'headshot': headshot, 'most_recent': most_recent, 'celeb_name': celeb_name})
 
