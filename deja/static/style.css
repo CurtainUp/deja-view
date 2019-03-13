@@ -68,3 +68,15 @@ li {
     display: block;
     margin: 0 auto;
 }
+
+/* Loading GIF */
+
+#overlay img {
+    position: absolute;
+    width: 100%;
+    transition: .5s ease;
+}
+
+#overlay.hidden img {
+    display: none;
+}

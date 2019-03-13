@@ -21,7 +21,7 @@
 {% for celeb in results %}
 <form method="post">
 {% csrf_token %}
-<button type="submit" class="btn btn-secondary full-width" name="celeb_name" value="{{celeb.name}}">{{ celeb.name }} {% widthratio celeb.prob 1 100 %}%</button>
+<button type="submit" class="btn btn-secondary full-width" name="celeb_name" value="{{celeb.name}}" onclick="showLoading()">{{ celeb.name }} {% widthratio celeb.prob 1 100 %}%</button>
 </form>
 <br />
 {% endfor %}

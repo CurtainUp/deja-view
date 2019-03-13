@@ -1,17 +1,21 @@
 {% extends 'index.html' %}
 
 {% block content %}
-<h1>Filmography of {{ celeb_name }}</h1>
+<h1>{{ celeb_name }}</h1>
 
 {% if headshot == "No headshot available" %}
 {% else %}
 <img src="{{ headshot }}" class="headshot" alt="{{celeb_name}}'s headshot">
 {% endif %}
 
+<br />
+
+<h5>Most Recent Credits</h5>
 <h6>Click the checkboxes to add a title to your watchlist</h6>
 {% for film in most_recent %}
 <li><input type="checkbox">  {{ film }}</li>
 {% endfor %}
 
+<a href="https://www.imdb.com/name/nm{{ celebID }}" target="_blank" class="btn btn-secondary mt-2" role="button">See All</a>
 
 {% endblock content %}
