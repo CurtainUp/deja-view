@@ -185,6 +185,9 @@ def deja_results(request, deja_id):
             messages.success(request, "Deja Deleted")
             return HttpResponseRedirect(reverse("deja:index"))
 
+        elif request.POST.get('back'):
+            return HttpResponseRedirect(reverse("deja:deja_results"), args=deja_id)
+
     else:
 
         return render(request, "deja_results.html", {'results': results, 'uploaded_img': uploaded_img, 'deja_id': deja_id})
