@@ -4,23 +4,23 @@
 
 {% if messages %}
 <div class="messages">
-    {% if message in messages %}
+    {% for message in messages %}
     <div {% if message.tags %} class="alert alert-{{ message.tags }}" {% endif %}>
             <strong>{{ message }}</strong>
     </div>
-    {% endif %}
+    {% endfor %}
 </div>
 {% endif %}
 
 <h1>Deja Results</h1>
-<img src="{{ uploaded_img }}" alt="Your uploaded image"></img>
+<img src="{{ uploaded_img }}" class="uploaded" alt="Your uploaded image"></img>
 
 <br />
 
 {% for celeb in results %}
 <form method="post">
 {% csrf_token %}
-<button type="submit" class="btn btn-secondary full-width mt-3" name="celeb_name" value="{{celeb.name}}" onclick="showLoading()">{{ celeb.name }} {% widthratio celeb.prob 1 100 %}%</button>
+<button type="submit" class="btn btn-secondary full-width mt-2" name="celeb_name" value="{{celeb.name}}" onclick="showLoading()">{{ celeb.name }} {% widthratio celeb.prob 1 100 %}%</button>
 </form>
 {% endfor %}
 
