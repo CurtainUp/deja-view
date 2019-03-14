@@ -26,6 +26,8 @@
             </a>
         </nav>
 
+        {% block content %}
+
         {% if messages %}
         <div class="messages">
             {% for message in messages %}
@@ -36,7 +38,6 @@
         </div>
         {% endif %}
 
-        {% block content %}
         <h1>{% if user.is_authenticated %} dejaView {% else %} dejaView</h1>
         <h1>login or create an account to begin
             {% endif %}
@@ -45,6 +46,7 @@
         {% if user.is_authenticated %}
         <div><a href="{% url 'deja:deja' %}">Deja</div>
         <div><a href="{% url 'deja:history' %}">History</div>
+        <div><a href="{% url 'deja:watchlist' %}">Watchlist</div>
         <div><a href="{% url 'deja:logout' %}">Logout</a></div>
         {% else %}
         <div><a href="{% url 'deja:login' %}">Login</a></div>

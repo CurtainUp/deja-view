@@ -10,5 +10,6 @@ urlpatterns = [
     path('history', views.history, name='history'),
     path('deja', views.deja, name='deja'),
     path('deja_results/<int:deja_id>', views.deja_results, name='deja_results'),
-    path('note/<int:deja_id>', views.note, name='note')
+    path('note/<int:deja_id>', views.note, name='note'),
+    path('watchlist', views.watchlist, name='watchlist')
 ]

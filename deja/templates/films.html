@@ -1,6 +1,16 @@
 {% extends 'index.html' %}
 
 {% block content %}
+{% if messages %}
+<div class="messages">
+    {% for message in messages %}
+    <div {% if message.tags %} class="alert alert-{{ message.tags }}" {% endif %}>
+            <strong>{{ message }}</strong>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
 <h1>{{ celeb_name }}</h1>
 
 {% if headshot == "No headshot available" %}
@@ -10,16 +20,30 @@
 
 <br />
 
+{% if most_recent %}
 <h5>Most Recent Credits</h5>
 <h6>Click the checkboxes to add a title to your watchlist</h6>
-{% for film in most_recent %}
-<li><input type="checkbox">  {{ film }}</li>
-{% endfor %}
+    {% for credit in most_recent %}
+    <form method="post">
+    {% csrf_token %}
+        <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="credit" value="{{ credit.title }}" id="{{ credit.title }}">
+                <label class="form-check-label" for="{{ credit.title }}">
+                {{ credit.title }}
+                </label>
+        </div>
+    {% endfor %}
+        <input type="submit" name="watchlist_add" value="Add to Watchlist" />
+    </form>
+{% else %}
+<h5>No previous credits for this person</h5>
+{% endif %}
 
-<a href="https://www.imdb.com/name/nm{{ celebID }}" target="_blank" class="btn btn-secondary mt-2" role="button">See All</a>
+<a href="https://www.imdb.com/name/nm{{ celebID }}" target="_blank" class="btn btn-secondary mt-2" role="button">See
+    All</a>
 
 <form>
-<button type="submit" class="btn btn-secondary" name="back">Back to Results</button>
+    <button type="submit" class="btn btn-secondary" name="back">Back to Results</button>
 </form>
 
 {% endblock content %}

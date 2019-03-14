@@ -25,8 +25,7 @@ firebase = pyrebase.initialize_app(config)
 
 # Create your views here.
 def index(request):
-    index_template = "index.html"
-    return render(request, index_template)
+    return render(request, "index.html")
 
 def register_user(request):
     '''Handles the creation of a new user for authentication'''
@@ -126,42 +125,47 @@ def deja_results(request, deja_id):
 
     if request.method == 'POST':
 
-        if request.POST.get("celeb_name"):
-            celeb_name = request.POST["celeb_name"]
+        if request.POST.get('celeb_name'):
+            celeb_name = request.POST['celeb_name']
 
-            # IMDPy fetch for result's filmography
-            ia = imdb.IMDb()
-            celeb = ia.search_person(celeb_name)
-            celebID = celeb[0].personID
-            person = ia.get_person(celebID)
-            filmography = person['filmography']
-            # print(filmography)
+            if request.session.get('credits') and request.session['credits']['celeb_name'] == celeb_name:
+                return render(request, "films.html", request.session['credits'])
+            else:
+                print("searching imdb")
+                # IMDPy fetch for result's filmography
+                ia = imdb.IMDb()
+                celeb = ia.search_person(celeb_name)
+                celebID = celeb[0].personID
+                person = ia.get_person(celebID)
+                filmography = person['filmography']
 
-            # Reduce list to most recent 10 entries to pass to template
-            most_recent = []
+                # Reduce list to most recent 5 entries to pass to template
+                most_recent = []
 
-            for value in filmography[0].values():
-                for film in value[:5]:
-                    # if len(most_recent) < 5:
-                    # print(dir(film))
-                    movieID = film.getID()
-                    movie = ia.get_movie(movieID)
-                    # print(movie.infoset2keys)
+                for value in filmography[0].values():
+                    for film in value:
+                        if len(most_recent) < 5:
+                            # print(dir(film))
+                            movieID = film.getID()
+                            movie = ia.get_movie(movieID)
+                            # print(movie.infoset2keys)
 
-                    # if movie.get('cover url'):
-                    most_recent.append(film)
-                    # print("URL: ", ia.get_imdbURL(movie))
-                    # IMDB url format
-                    # http://www.imdb.com/title/tt3215824/
-                    # Grab first 10 with cover urls
+                            if movie.get('cover url'):
+                                most_recent.append(film)
+                            # print("URL: ", ia.get_imdbURL(movie))
+                            # IMDB url format
+                            # http://www.imdb.com/title/tt3215824/
 
-                    # print(film.get_fullsizeURL())
+                                # print(movie.get_fullsizeURL())
 
-            # Returns url of actor headshot OR default message if none available!
-            no_headshot = "No headshot available"
-            headshot = person.get('full-size headshot', no_headshot)
+                # Returns url of actor headshot OR default message if none available!
+                no_headshot = "No headshot available"
+                headshot = person.get('full-size headshot', no_headshot)
 
-            return render(request, "films.html", {'headshot': headshot, 'most_recent': most_recent, 'celeb_name': celeb_name, 'celebID': celebID})
+                context = {'headshot': headshot, 'most_recent': most_recent, 'celeb_name': celeb_name, 'celebID': celebID}
+                request.session['credits'] = context
+
+                return render(request, "films.html", request.session['credits'])
 
         elif request.POST.get("note"):
             return HttpResponseRedirect(reverse("deja:note", args=(deja_id,)))
@@ -186,7 +190,22 @@ def deja_results(request, deja_id):
             return HttpResponseRedirect(reverse("deja:index"))
 
         elif request.POST.get('back'):
-            return HttpResponseRedirect(reverse("deja:deja_results"), args=deja_id)
+            return HttpResponseRedirect(reverse("deja:deja_results", args=(deja_id,)))
+
+        elif request.POST.get('watchlist_add'):
+            current_user = request.user
+            # if the credit has been checked, it is added to the database
+            if 'credit' in request.POST:
+                watch_items = request.POST.getlist('credit')
+
+                for item in watch_items:
+                    title = item
+                    user_id = current_user.id
+
+                    queue_item = Queue(title=title, user_id=user_id)
+                    queue_item.save()
+            messages.success(request, "Watchlist Updated")
+            return render(request, "films.html", request.session['credits'])
 
     else:
 
@@ -256,3 +275,10 @@ def history(request):
             return HttpResponseRedirect(reverse('deja:history'))
 
     return render(request, "history.html", {'dejas': dejas})
+
+@login_required
+def watchlist(request):
+    current_user = request.user
+    queue = Queue.objects.filter(user_id=current_user.id)
+
+    return render(request, "watchlist.html", {'queue': queue})

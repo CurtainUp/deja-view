@@ -48,6 +48,11 @@ li {
 
 /* DEJA RESULT STYLING */
 
+.uploaded {
+    display: block;
+    margin: 0 auto;
+}
+
 @media(max-width: 768px) {
     button.full-width {
         width: 100%;

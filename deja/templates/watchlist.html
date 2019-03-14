@@ -1,0 +1,18 @@
+{% extends 'index.html' %}
+
+{% block content %}
+
+<h1>Watchlist</h1>
+
+{% if queue %}
+<div class="watchlist">
+    {% for item in queue %}
+    <p>{{ item.title }}</p>
+    <br />
+    {% endfor %}
+{% else %}
+    <p>No items in your watchlist</p>
+</div>
+{% endif %}
+
+{% endblock content %}

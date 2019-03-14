@@ -6,7 +6,7 @@ class Deja(models.Model):
     '''An instance of a user generated remembrance'''
     created = models.DateTimeField(auto_now_add=True)
     img_url = models.CharField(max_length=100, blank=False)
-    user = models.ForeignKey(User, on_delete=models.PROTECT)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         '''string method that returns Deja's creator and id'''
@@ -24,18 +24,6 @@ class Result(models.Model):
 
         return (f"{self.name} is a {self.probability} match.")
 
-# class Filmography(models.Model):
-#     '''An instance of a match's film appearances'''
-#     title = models.CharField(max_length=150, blank=False)
-#     year = models.IntegerField(blank=False)
-#     role = models.CharField(max_length=100, blank=False)
-#     result = models.ForeignKey(Result, on_delete=models.CASCADE)
-
-#     def __str__(self):
-#         '''string method that returns title and role'''
-
-#         return (f"They appeared as {self.role} in {self.title}")
-
 class Note(models.Model):
     '''A note attached to a Deja'''
     text = models.TextField(blank=True)
@@ -45,3 +33,16 @@ class Note(models.Model):
         '''string method that returns text value'''
 
         return (f"Note: {self.text}")
+
+class Queue(models.Model):
+    '''A movie or film on the user's watchlist'''
+    title = models.CharField(max_length=100, blank=False)
+    watched = models.BooleanField(default=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        '''string method that returns the title and if it has been watched'''
+        if self.watched == True:
+            return (f"Queue: {self.user.username} has watched {self.title}")
+        else:
+            return (f"Queue: {self.user.username} has not watched {self.title}")
