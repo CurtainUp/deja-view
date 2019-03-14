@@ -135,28 +135,33 @@ def deja_results(request, deja_id):
             celebID = celeb[0].personID
             person = ia.get_person(celebID)
             filmography = person['filmography']
-            print(filmography)
+            # print(filmography)
 
             # Reduce list to most recent 10 entries to pass to template
             most_recent = []
 
             for value in filmography[0].values():
-                for film in value[:10]:
+                for film in value[:5]:
+                    # if len(most_recent) < 5:
+                    # print(dir(film))
+                    movieID = film.getID()
+                    movie = ia.get_movie(movieID)
+                    # print(movie.infoset2keys)
+
+                    # if movie.get('cover url'):
                     most_recent.append(film)
+                    # print("URL: ", ia.get_imdbURL(movie))
+                    # IMDB url format
+                    # http://www.imdb.com/title/tt3215824/
+                    # Grab first 10 with cover urls
 
-            # Returns url of actor headshot!
+                    # print(film.get_fullsizeURL())
+
+            # Returns url of actor headshot OR default message if none available!
             no_headshot = "No headshot available"
-            headshot = person.get('headshot', no_headshot)
+            headshot = person.get('full-size headshot', no_headshot)
 
-            # if person['headshot']:
-            #     headshot = person['headshot']
-            #     return headshot
-
-            # else:
-            #     headshot = "No headshot available"
-            #     return headshot
-
-            return render(request, "films.html", {'headshot': headshot, 'most_recent': most_recent, 'celeb_name': celeb_name})
+            return render(request, "films.html", {'headshot': headshot, 'most_recent': most_recent, 'celeb_name': celeb_name, 'celebID': celebID})
 
         elif request.POST.get("note"):
             return HttpResponseRedirect(reverse("deja:note", args=(deja_id,)))
@@ -179,6 +184,9 @@ def deja_results(request, deja_id):
             deja.delete()
             messages.success(request, "Deja Deleted")
             return HttpResponseRedirect(reverse("deja:index"))
+
+        elif request.POST.get('back'):
+            return HttpResponseRedirect(reverse("deja:deja_results"), args=deja_id)
 
     else:
 

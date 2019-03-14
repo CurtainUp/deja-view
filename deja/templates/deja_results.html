@@ -15,20 +15,24 @@
 <h1>Deja Results</h1>
 <img src="{{ uploaded_img }}" alt="Your uploaded image"></img>
 
-<ul>
+<br />
+
 {% for celeb in results %}
 <form method="post">
 {% csrf_token %}
-<button type="submit" name="celeb_name" value="{{celeb.name}}">{{ celeb.name }} {% widthratio celeb.prob 1 100 %}%</button>
+<button type="submit" class="btn btn-secondary full-width mt-3" name="celeb_name" value="{{celeb.name}}" onclick="showLoading()">{{ celeb.name }} {% widthratio celeb.prob 1 100 %}%</button>
 </form>
-<br />
 {% endfor %}
-</ul>
+
+<br />
+
+<div class="d-flex justify-content-center">
 <form method="post">
 {% csrf_token %}
-<button type="submit" name="note" value="note"><i class="fas fa-pencil-alt"></i></button>
-<button type="submit" name="save_deja" value="save_deja"><i class="fas fa-save"></i></i></button>
-<button type="submit" name="delete" value={{deja_id}}>Delete</button>
+<button type="submit" class="btn btn-secondary" name="note" value="note"><i class="fas fa-pencil-alt"></i></button>
+<button type="submit" class="btn btn-secondary" name="save_deja" value="save_deja"><i class="fas fa-save"></i></i></button>
+<button type="submit" class="btn btn-secondary" name="delete" value={{deja_id}}><i class="fas fa-trash-alt"></i></button>
 </form>
+</div>
 
 {% endblock content %}

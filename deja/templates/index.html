@@ -15,6 +15,10 @@
 </head>
 
 <body>
+    <div id="overlay" class="hidden">
+        <img src="{% static 'SMPTE.gif' %}" alt="Fetching results..." />
+    </div>
+
     <div class="container">
         <nav>
             <a class="navbar-brand" href="{% url 'deja:index' %}">
@@ -26,14 +30,15 @@
         <div class="messages">
             {% for message in messages %}
             <div {% if message.tags %} class="alert alert-{{ message.tags }}" {% endif %}>
-                    <strong>{{ message }}</strong>
+                <strong>{{ message }}</strong>
             </div>
             {% endfor %}
         </div>
         {% endif %}
 
         {% block content %}
-        <h1>{% if user.is_authenticated %} dejaView {% else %} dejaView</h1><h1>login or create an account to begin
+        <h1>{% if user.is_authenticated %} dejaView {% else %} dejaView</h1>
+        <h1>login or create an account to begin
             {% endif %}
         </h1>
 
@@ -48,6 +53,31 @@
 
         {% endblock content %}
     </div>
+
+
+
+    <!-- Script for loading animation -->
+    <script type="text/javascript">
+        var loading = document.getElementById("overlay")
+
+        function showLoading() {
+
+            show = function () {
+                loading.classList.remove("hidden")
+            }
+
+            hide = function () {
+                loading.classList.add("hidden")
+            }
+
+            show()
+
+            window.onload = function () {
+                hide()
+            }
+        }
+    </script>
+
     <!-- Script that connects page to Firebase -->
     <script src="https://www.gstatic.com/firebasejs/5.8.5/firebase.js"></script>
     <script>
@@ -59,17 +89,17 @@
             storageBucket: "dejaview-d81e4.appspot.com",
             messagingSenderId: "39327407953"
         };
-        firebase.initializeApp(config);
+        firebase.initializeApp(config)
 
         // Get a reference to the storage service, which is used to create references in your storage bucket
         function uploadimage() {
             // TODO: Change vars to lets and consts
-            var storage = firebase.storage();
+            var storage = firebase.storage()
             var file = document.getElementById("image").files[0];
             // Reference to Firebase Storage
-            var storageRef = storage.ref();
+            var storageRef = storage.ref()
 
-            var thisref = storageRef.child(file.name).put(file);
+            var thisref = storageRef.child(file.name).put(file)
 
             thisref.on('state_changed', function (snapshot) {
             },
@@ -79,12 +109,12 @@
                 }, function () {
                     // Upload completed successfully, now we can get the download URL
                     var downloadURL = thisref.snapshot.ref.getDownloadURL().then(function (downloadURL) {
-                        console.log('File available at', downloadURL);
-                    alert("File uploaded successfully");
-                    return document.getElementById("url").value = downloadURL;
-                    });
+                        console.log('File available at', downloadURL)
+                        alert("File uploaded successfully")
+                        return document.getElementById("url").value = downloadURL
+                    })
 
-                });
+                })
         }
 
     </script>
