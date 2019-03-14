@@ -25,8 +25,7 @@ firebase = pyrebase.initialize_app(config)
 
 # Create your views here.
 def index(request):
-    index_template = "index.html"
-    return render(request, index_template)
+    return render(request, "index.html")
 
 def register_user(request):
     '''Handles the creation of a new user for authentication'''
@@ -256,3 +255,10 @@ def history(request):
             return HttpResponseRedirect(reverse('deja:history'))
 
     return render(request, "history.html", {'dejas': dejas})
+
+@login_required
+def watchlist(request):
+    current_user = request.user
+    queue = Queue.objects.filter(user_id=current_user.id)
+
+    return render(request, "watchlist.html", {'queue': queue})
