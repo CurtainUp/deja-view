@@ -4,15 +4,29 @@
 
 <h1>Watchlist</h1>
 
-{% if queue %}
-<div class="watchlist">
-    {% for item in queue %}
-    <p>{{ item.title }}</p>
-    <br />
-    {% endfor %}
-{% else %}
-    <p>No items in your watchlist</p>
+<div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+    <ul class="nav nav-tabs">
+        <li class="active"><a class="nav-item nav-link active" data-toggle="tab" role="tab" href="#watchlist">Watchlist</a>
+        </li>
+        <li><a class="nav-item nav-link" data-toggle="tab" role="tab" href="#watched">Watched</a></li>
+
+    </ul>
 </div>
-{% endif %}
+
+<div class="tab-content">
+    <div id="watchlist" class="tab-pane active">
+        {% if queue %}
+        {% for item in queue %}
+        <p>{{ item.title }}</p>
+        <br />
+        {% endfor %}
+        {% else %}
+        <p>No items in your watchlist</p>
+        {% endif %}
+    </div>
+    <div id="watched" class="tab-pane fade">
+        <p>This is where watched movies will live</p>
+    </div>
+</div>
 
 {% endblock content %}
