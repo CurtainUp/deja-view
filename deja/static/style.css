@@ -21,6 +21,10 @@ li {
     list-style-type: none;
 }
 
+h1 {
+    font-family: 'Fontdiner Swanky', cursive;
+}
+
 /* DEJA HISTORY STYLING */
 
 #deja-history {
@@ -130,7 +134,8 @@ nav > div a.nav-item.nav-link.active:after
 
 .tab-content{
     line-height: 25px;
-    padding:30px 25px;
+    padding: 15px, 0;
+    margin-top: 10px;
 }
 
 /* nav > div a.nav-item.nav-link:hover,

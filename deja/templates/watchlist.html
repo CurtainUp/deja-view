@@ -2,11 +2,22 @@
 
 {% block content %}
 
-<h1>Watchlist</h1>
+<h1>dejaQueue</h1>
+
+{% if messages %}
+<div class="messages">
+    {% for message in messages %}
+    <div {% if message.tags %} class="alert alert-{{ message.tags }}" {% endif %}>
+            <strong>{{ message }}</strong>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
 
 <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
     <ul class="nav nav-tabs">
-        <li class="active"><a class="nav-item nav-link active" data-toggle="tab" role="tab" href="#watchlist">Watchlist</a>
+        <li class="active"><a class="nav-item nav-link active" data-toggle="tab" role="tab"
+                href="#watchlist">Watchlist</a>
         </li>
         <li><a class="nav-item nav-link" data-toggle="tab" role="tab" href="#watched">Watched</a></li>
 
@@ -15,17 +26,52 @@
 
 <div class="tab-content">
     <div id="watchlist" class="tab-pane active">
-        {% if queue %}
-        {% for item in queue %}
-        <p>{{ item.title }}</p>
-        <br />
+        {% if to_watch %}
+        {% for item in to_watch %}
+        <div class="container">
+            <div class="row">
+                <div class="col-9">
+                    <p>{{ item.title }}</p>
+                </div>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="btn-group" role="group">
+                        <button type="submit" class="btn btn-secondary btn-sm" name="watched" value="{{ item.id }}"><i class="far fa-eye"
+                                alt="Mark as watched"></i></button>
+                        <button type="submit" class="btn btn-secondary btn-sm" name="remove" value="{{ item.id }}"><i class="fas fa-minus-circle"
+                                alt="Remove from watchlist"></i></button>
+                    </div>
+                </form>
+            </div>
+        </div>
         {% endfor %}
         {% else %}
         <p>No items in your watchlist</p>
         {% endif %}
     </div>
     <div id="watched" class="tab-pane fade">
-        <p>This is where watched movies will live</p>
+        {% if watched %}
+        {% for item in watched %}
+        <div class="container">
+            <div class="row">
+                <div class="col-9">
+                    <p>{{ item.title }}</p>
+                </div>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="btn-group" role="group">
+                        <button type="submit" class="btn btn-secondary btn-sm" name="watch" value="{{ item.id }}"><i class="far fa-eye-slash"
+                                alt="Move to watchlist"></i></button>
+                        <button type="submit" class="btn btn-secondary btn-sm" name="remove" value="{{ item.id }}"><i class="fas fa-minus-circle"
+                                alt="Remove from watchlist"></i></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <p>No watched items</p>
+        {% endif %}
     </div>
 </div>
 

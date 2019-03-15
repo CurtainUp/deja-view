@@ -204,7 +204,7 @@ def deja_results(request, deja_id):
 
                     queue_item = Queue(title=title, user_id=user_id)
                     queue_item.save()
-            messages.success(request, "Watchlist Updated")
+            messages.success(request, "dejaQueue Updated")
             return render(request, "films.html", request.session['credits'])
 
     else:
@@ -279,6 +279,19 @@ def history(request):
 @login_required
 def watchlist(request):
     current_user = request.user
-    queue = Queue.objects.filter(user_id=current_user.id)
+    to_watch = Queue.objects.filter(user_id=current_user.id, watched=False)
+    watched = Queue.objects.filter(user_id=current_user.id, watched=True)
 
-    return render(request, "watchlist.html", {'queue': queue})
+    if request.method == 'POST':
+        # if request.POST.get('watch'):
+
+        # if request.POST.get('watched'):
+
+        if request.POST.get('remove'):
+            watchlist_id = request.POST['remove']
+            watchlist_item = Queue.objects.get(pk=watchlist_id)
+            watchlist_item.delete()
+            messages.success(request, "Queue Updated")
+            return HttpResponseRedirect(reverse('deja:watchlist'))
+
+    return render(request, "watchlist.html", {'to_watch': to_watch, 'watched': watched})
