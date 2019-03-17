@@ -22,7 +22,7 @@
 
     <div class="container">
         <nav>
-            <a class="navbar-brand" href="{% url 'deja:index' %}">
+            <a id="home" class="navbar-brand" href="{% url 'deja:index' %}">
                 dejaView
             </a>
         </nav>
@@ -45,7 +45,7 @@
         </h1>
 
         {% if user.is_authenticated %}
-        <div><a href="{% url 'deja:deja' %}">Deja</div>
+        <div><a href="{% url 'deja:deja' %}">deja</div>
         <div><a href="{% url 'deja:history' %}">History</div>
         <div><a href="{% url 'deja:watchlist' %}">dejaQueue</div>
         <div><a href="{% url 'deja:logout' %}">Logout</a></div>

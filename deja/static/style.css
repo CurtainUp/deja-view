@@ -1,10 +1,17 @@
+/* Old colors, teal and rgb(27, 49, 49) */
+
+:root  {
+    --main-bg-color: #f600ff;
+    --main-bold-color: #69006d;
+}
+
 html {
     height: 100%;
 }
 
 body {
     background-repeat: no-repeat;
-    background-color: teal;
+    background-color: var(--main-bg-color);
     /* color: rgb(21, 36, 36) */
     /* background: radial-gradient(purple, rgb(128, 130, 128)); */
 }
@@ -25,11 +32,15 @@ h1 {
     font-family: 'Fontdiner Swanky', cursive;
 }
 
+#home  {
+    font-family: 'Fontdiner Swanky', cursive;
+}
+
 /* DEJA HISTORY STYLING */
 
 #deja-history {
     padding: 0px;
-    background-color: rgb(27, 49, 49);
+    background-color: var(--main-bold-color);
     justify-content: center;
 }
 
@@ -68,7 +79,8 @@ h1 {
 /* FILMOGRAPHY STYLING */
 
 .btn-secondary {
-    background-color: rgb(27, 49, 49) !important;
+    background-color: var(--main-bold-color) !important;
+    border-color: whitesmoke !important;
 }
 
 /* Resizes and centers full-size headshot */
@@ -106,10 +118,14 @@ h1 {
 
 /* WATCHLIST STYLING */
 
+.nav-tabs {
+    border-bottom: 2px solid whitesmoke !important;
+}
+
 nav > .nav.nav-tabs{
     border: none !important;
     color:#fff;
-    background: rgb(27, 49, 49);
+    background: var(--main-bold-color);
     border-radius:0;
 }
 nav > div a.nav-item.nav-link,
@@ -118,7 +134,7 @@ nav > div a.nav-item.nav-link.active
     border: none;
     padding: 18px 25px;
     color:#fff;
-    background: rgb(27, 49, 49);
+    background: var(--main-bold-color);
     border-radius:0;
 }
 
@@ -129,7 +145,7 @@ nav > div a.nav-item.nav-link.active:after
     bottom: -60px;
     left: -10%;
     border: 15px solid transparent;
-    border-top-color: rgb(27, 49, 49);
+    border-top-color: var(--main-bold-color);
 }
 
 .tab-content{
@@ -142,7 +158,7 @@ nav > div a.nav-item.nav-link.active:after
 nav > div a.nav-item.nav-link:focus
 {
     border: none;
-    background: rgb(27, 49, 49);
+    background: var(--main-bold-color);
     color:#fff;
     border-radius:0;
     transition:background 0.20s linear;

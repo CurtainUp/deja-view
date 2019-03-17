@@ -293,5 +293,19 @@ def watchlist(request):
             watchlist_item.delete()
             messages.success(request, "Queue Updated")
             return HttpResponseRedirect(reverse('deja:watchlist'))
+        elif request.POST.get('watch'):
+            watchlist_id = request.POST['watch']
+            watchlist_item = Queue.objects.get(pk=watchlist_id)
+            watchlist_item.watched = False
+            watchlist_item.save()
+            messages.success(request, "Queue Updated")
+            return HttpResponseRedirect(reverse('deja:watchlist'))
+        elif request.POST.get('watched'):
+            watchlist_id = request.POST['watched']
+            watchlist_item = Queue.objects.get(pk=watchlist_id)
+            watchlist_item.watched = True
+            watchlist_item.save()
+            messages.success(request, "Queue Updated")
+            return HttpResponseRedirect(reverse('deja:watchlist'))
 
     return render(request, "watchlist.html", {'to_watch': to_watch, 'watched': watched})
