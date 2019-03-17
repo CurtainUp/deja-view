@@ -1,6 +1,7 @@
 {% extends 'index.html' %}
 
 {% block content %}
+
 {% if messages %}
 <div class="messages">
     {% for message in messages %}
@@ -33,7 +34,7 @@
                 </label>
         </div>
     {% endfor %}
-        <input type="submit" name="watchlist_add" value="Add to Watchlist" />
+        <button type="submit" class="btn btn-secondary" name="watchlist_add" value="watchlist_add"><i class="far fa-eye" alt="Move to watchlist"></i></button>
     </form>
 {% else %}
 <h5>No previous credits for this person</h5>

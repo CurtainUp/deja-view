@@ -11,6 +11,7 @@
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css"
         integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Fontdiner+Swanky" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'style.css' %}">
 </head>
 
@@ -21,7 +22,7 @@
 
     <div class="container">
         <nav>
-            <a class="navbar-brand" href="{% url 'deja:index' %}">
+            <a id="home" class="navbar-brand" href="{% url 'deja:index' %}">
                 dejaView
             </a>
         </nav>
@@ -44,9 +45,9 @@
         </h1>
 
         {% if user.is_authenticated %}
-        <div><a href="{% url 'deja:deja' %}">Deja</div>
+        <div><a href="{% url 'deja:deja' %}">deja</div>
         <div><a href="{% url 'deja:history' %}">History</div>
-        <div><a href="{% url 'deja:watchlist' %}">Watchlist</div>
+        <div><a href="{% url 'deja:watchlist' %}">dejaQueue</div>
         <div><a href="{% url 'deja:logout' %}">Logout</a></div>
         {% else %}
         <div><a href="{% url 'deja:login' %}">Login</a></div>
