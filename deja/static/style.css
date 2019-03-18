@@ -3,9 +3,14 @@
 :root  {
     --main-bg-color: #dd74df;
     --main-bold-color: #69006d;
+    --main-dark-color: #48004b;
 }
 
 html {
+    height: 100%;
+}
+
+.container {
     height: 100%;
 }
 
@@ -13,12 +18,27 @@ body {
     background-repeat: no-repeat;
     background-color: var(--main-bg-color);
     font-family: 'Oswald', sans-serif;
+    height: 100%;
     /* color: rgb(21, 36, 36) */
-    /* background: radial-gradient(purple, rgb(128, 130, 128)); */
+    background: radial-gradient(var(--main-bg-color), var(--main-bold-color));
 }
+
+.footer {
+    position : absolute;
+    bottom : 0;
+    margin-top : 40px;
+    padding: 10px;
+    background-color: var(--main-dark-color);
+    width: 100%;
+  }
 
 a {
     color: white;
+}
+
+a:hover {
+    color: whitesmoke;
+    text-shadow: 0px 0px 6px whitesmoke;
 }
 
 img {
@@ -37,7 +57,22 @@ h1 {
     font-family: 'Fontdiner Swanky', cursive;
 }
 
+/* INDEX STYLING */
+#title {
+    font-size: 4em;
+}
+
 /* DEJA BUTTON */
+
+#deja-link {
+    width: 200px;
+    height: 200px;
+}
+
+button.deja-button {
+    border: none;
+    margin: 0;
+}
 
 .deja-button{
     background-image: -webkit-linear-gradient(top, #f4f1ee, #fff);

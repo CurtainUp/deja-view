@@ -1,20 +1,19 @@
 {% extends 'index.html' %}
 
 {% block content %}
-<h1>Register, girl</h1>
+<h1>Register</h1>
 
 {% if registered %}
     <strong>Thank you for registering!</strong>
     <a href="{% url 'deja:index' %}">Return Home</a><br />
     {% else %}
-    <strong>Register here!</strong><br />
+<br />
 
         <form id="user_form" method="post" action="{% url 'deja:register' %}" enctype="multipart/form-data">
             {% csrf_token %}
 
             {{ user_form.as_p }}
-
-            <input type="submit" name="submit" value="Register" />
+            <button type="submit" class="btn btn-secondary" name="submit">Register</button>
         </form>
 {% endif %}
 {% endblock content %}
