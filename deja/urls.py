@@ -11,5 +11,5 @@ urlpatterns = [
     path('deja', views.deja, name='deja'),
     path('deja_results/<int:deja_id>', views.deja_results, name='deja_results'),
     path('note/<int:deja_id>', views.note, name='note'),
-    path('watchlist', views.watchlist, name='watchlist')
+    path('watchlist', views.watchlist, name='watchlist'),
 ]
