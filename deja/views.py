@@ -65,7 +65,6 @@ def login_user(request):
 
     # If the request is a HTTP POST, try to pull out the relevant information.
     if request.method == "POST":
-        print(request.POST)
 
         # Use the built-in authenticate method to verify
         username = request.POST["username"]
@@ -204,7 +203,7 @@ def deja_results(request, deja_id):
 
                     queue_item = Queue(title=title, user_id=user_id)
                     queue_item.save()
-            messages.success(request, "dejaQueue Updated")
+            messages.info(request, "dejaQueue Updated")
             return render(request, "films.html", request.session['credits'])
 
     else:

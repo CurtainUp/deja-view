@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css"
         integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Fontdiner+Swanky" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Oswald" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'style.css' %}">
 </head>
 
@@ -26,6 +27,7 @@
                 dejaView
             </a>
         </nav>
+        <br />
 
         {% block content %}
 
@@ -39,22 +41,40 @@
         </div>
         {% endif %}
 
-        <h1>{% if user.is_authenticated %} dejaView {% else %} dejaView</h1>
-        <h1>login or create an account to begin
-            {% endif %}
-        </h1>
+        <div class="row justify-content-center">
+            <h1 id="title">dejaView</h1>
+        </div>
+        {% if not user.is_authenticated %}
+        <div class="row justify-content-center">
+            <h4>Login or create an account to begin</h4>
+        </div>
+        {% endif %}
+
 
         {% if user.is_authenticated %}
-        <div><a href="{% url 'deja:deja' %}">deja</div>
-        <div><a href="{% url 'deja:history' %}">History</div>
-        <div><a href="{% url 'deja:watchlist' %}">dejaQueue</div>
-        <div><a href="{% url 'deja:logout' %}">Logout</a></div>
-        {% else %}
-        <div><a href="{% url 'deja:login' %}">Login</a></div>
-        <div><a href="{% url 'deja:register' %}">Register</a></div>
+
+        <div class="row d-flex flex-fill justify-content-center">
+            <a id="deja-link" href="{% url 'deja:deja' %}">
+                <div class="deja-button txt"></div>
+            </a>
+        </div>
         {% endif %}
 
         {% endblock content %}
+
+        {% if user.is_authenticated %}
+
+        <div class="footer row d-flex justify-content-center align-bottom">
+            <a class="btn btn-secondary mr-3" href="{% url 'deja:history' %}">History</a>
+            <a class="btn btn-secondary mr-3" href="{% url 'deja:watchlist' %}">dejaQueue</a>
+            <a class="btn btn-secondary" href="{% url 'deja:logout' %}">Logout</a>
+        </div>
+        {% else %}
+        <div class="row justify-content-center">
+            <a class="btn btn-secondary mr-3" href="{% url 'deja:login' %}">Login</a>
+            <a class="btn btn-secondary" href="{% url 'deja:register' %}">Register</a>
+        </div>
+        {% endif %}
     </div>
 
 

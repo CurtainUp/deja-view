@@ -3,11 +3,18 @@
 {% block content %}
 <h1>Deja</h1>
 <form method="post" enctype="multipart/form-data">
-{% csrf_token %}
-<input type="file" name="image" id="image">
-<input type="hidden" name="url" id="url">
-<button type="button" onclick="uploadimage()">Upload</button>
-<br />
-<input type="submit" value="DEJA">
+    {% csrf_token %}
+    <h6>Upload a screenshot and click the button below to get your matches</h6>
+    <div class="row justify-content-center">
+        <input type="file" class="btn btn-secondary" name="image" id="image">
+        <input type="hidden" name="url" id="url">
+        <button type="button" class="btn btn-secondary" onclick="uploadimage()">Upload</button>
+        <br />
+    </div>
+    <br />
+    <div class="row justify-content-center">
+        <button type="submit" class="deja-button txt"></button>
+    </div>
+
 </form>
 {% endblock content %}

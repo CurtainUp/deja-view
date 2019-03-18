@@ -1,23 +1,42 @@
 /* Old colors, teal and rgb(27, 49, 49) */
 
 :root  {
-    --main-bg-color: #f600ff;
+    --main-bg-color: #dd74df;
     --main-bold-color: #69006d;
+    --main-dark-color: #48004b;
 }
 
 html {
     height: 100%;
 }
 
+.container {
+    height: 100%;
+}
+
 body {
     background-repeat: no-repeat;
     background-color: var(--main-bg-color);
-    /* color: rgb(21, 36, 36) */
-    /* background: radial-gradient(purple, rgb(128, 130, 128)); */
+    font-family: 'Oswald', sans-serif;
+    height: 100%;
+    background: radial-gradient(var(--main-bg-color), var(--main-bold-color));
 }
+
+.footer {
+    position : absolute;
+    bottom : 0;
+    padding: 10px;
+    background-color: var(--main-dark-color);
+    width: 100%;
+  }
 
 a {
     color: white;
+}
+
+a:hover {
+    color: whitesmoke;
+    text-shadow: 0px 0px 6px whitesmoke;
 }
 
 img {
@@ -34,6 +53,81 @@ h1 {
 
 #home  {
     font-family: 'Fontdiner Swanky', cursive;
+}
+
+/* INDEX STYLING */
+#title {
+    font-size: 4em;
+    transform: translateY(30%);
+}
+
+/* DEJA BUTTON */
+
+#deja-link {
+    width: 200px;
+    height: 200px;
+}
+
+button.deja-button {
+    border: none;
+    margin: 0;
+}
+
+.deja-button{
+    background-image: -webkit-linear-gradient(top, #f4f1ee, #fff);
+    background-image: linear-gradient(top, #f4f1ee, #fff);
+    border-radius: 50%;
+    box-shadow: 0px 8px 10px 0px rgba(0, 0, 0, .3), inset 0px 4px 1px 1px white, inset 0px -3px 1px 1px rgba(204,198,197,.5);
+    float:left;
+    height: 200px;
+    margin: 0 30px 30px 0;
+    position: relative;
+    width: 200px;
+    -webkit-transition: all .1s linear;
+    transition: all .1s linear;
+    top: 42%;
+}
+
+.deja-button:after{
+    color:#e9e6e4;
+    content: "";
+    display: block;
+    font-size: 30px;
+    height: 30px;
+    text-decoration: none;
+    text-shadow: 0px -1px 1px #bdb5b4, 1px 1px 1px white;
+    position: absolute;
+    width: 30px;
+}
+
+.txt:after{
+    content: "deja!";
+    font-size: 4em;
+    left: 16px;
+    top: 65px;
+    font-family: 'Fontdiner Swanky', cursive;
+    -ms-transform: rotate(-10deg); /* IE 9 */
+    -webkit-transform: rotate(-10deg); /* Safari */
+    transform: rotate(-10deg);
+    color: var(--main-bold-color);
+    text-shadow:0px 0px 6px var(--main-bold-color);
+}
+
+.deja-button:hover{
+    background-image: -webkit-linear-gradient(top, #fff, #f4f1ee);
+    background-image: linear-gradient(top, #fff, #f4f1ee);
+    color:#0088cc;
+}
+
+.txt:hover:after{
+    color: var(--main-bold-color);
+    text-shadow:0px 0px 6px var(--main-bold-color);
+}
+
+.deja-button:active{
+    background-image: -webkit-linear-gradient(top, #efedec, #f7f4f4);
+    background-image: linear-gradient(top, #efedec, #f7f4f4);
+    box-shadow: 0 3px 5px 0 rgba(0,0,0,.4), inset 0px -3px 1px 1px rgba(204,198,197,.5);
 }
 
 /* DEJA HISTORY STYLING */
