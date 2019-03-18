@@ -19,14 +19,12 @@ body {
     background-color: var(--main-bg-color);
     font-family: 'Oswald', sans-serif;
     height: 100%;
-    /* color: rgb(21, 36, 36) */
     background: radial-gradient(var(--main-bg-color), var(--main-bold-color));
 }
 
 .footer {
     position : absolute;
     bottom : 0;
-    margin-top : 40px;
     padding: 10px;
     background-color: var(--main-dark-color);
     width: 100%;
@@ -60,6 +58,7 @@ h1 {
 /* INDEX STYLING */
 #title {
     font-size: 4em;
+    transform: translateY(30%);
 }
 
 /* DEJA BUTTON */
@@ -86,6 +85,7 @@ button.deja-button {
     width: 200px;
     -webkit-transition: all .1s linear;
     transition: all .1s linear;
+    top: 42%;
 }
 
 .deja-button:after{

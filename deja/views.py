@@ -203,7 +203,7 @@ def deja_results(request, deja_id):
 
                     queue_item = Queue(title=title, user_id=user_id)
                     queue_item.save()
-            messages.success(request, "dejaQueue Updated")
+            messages.info(request, "dejaQueue Updated")
             return render(request, "films.html", request.session['credits'])
 
     else:

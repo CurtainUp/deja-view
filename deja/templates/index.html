@@ -40,42 +40,41 @@
             {% endfor %}
         </div>
         {% endif %}
-        <!-- <div class="col"> -->
-            <div class="row justify-content-center">
-                <h1 id="title">dejaView</h1>
-            </div>
-            {% if user.is_authenticated %}
-            <br />
-            {% else %}
-            <div class="row justify-content-center">
-                <h4>Login or create an account to begin</h4>
-            </div>
 
-            {% endif %}
+        <div class="row justify-content-center">
+            <h1 id="title">dejaView</h1>
+        </div>
+        {% if not user.is_authenticated %}
+        <div class="row justify-content-center">
+            <h4>Login or create an account to begin</h4>
+        </div>
+        {% endif %}
 
-            <br />
 
-            {% if user.is_authenticated %}
+        {% if user.is_authenticated %}
 
-            <div class="row d-flex justify-content-center">
-                <a id="deja-link" href="{% url 'deja:deja' %}">
-                    <div class="deja-button txt"></div>
-                </a>
-            </div>
-            <br />
-            <div class="footer row d-flex justify-content-center align-bottom">
-                <button class="btn btn-secondary mr-3"><a href="{% url 'deja:history' %}">History</a></button>
-                <button class="btn btn-secondary mr-3"><a href="{% url 'deja:watchlist' %}">dejaQueue</a></button>
-                <button class="btn btn-secondary mr-3"><a href="{% url 'deja:logout' %}">Logout</a></button>
-            </div>
-            {% else %}
-            <div class="row justify-content-center">
-                <button class="btn btn-secondary mr-3"><a href="{% url 'deja:login' %}">Login</a></button>
-                <button class="btn btn-secondary"><a href="{% url 'deja:register' %}">Register</a></button>
-            </div>
-            {% endif %}
-        <!-- </div> -->
+        <div class="row d-flex flex-fill justify-content-center">
+            <a id="deja-link" href="{% url 'deja:deja' %}">
+                <div class="deja-button txt"></div>
+            </a>
+        </div>
+        {% endif %}
+
         {% endblock content %}
+
+        {% if user.is_authenticated %}
+
+        <div class="footer row d-flex justify-content-center align-bottom">
+            <a class="btn btn-secondary mr-3" href="{% url 'deja:history' %}">History</a>
+            <a class="btn btn-secondary mr-3" href="{% url 'deja:watchlist' %}">dejaQueue</a>
+            <a class="btn btn-secondary" href="{% url 'deja:logout' %}">Logout</a>
+        </div>
+        {% else %}
+        <div class="row justify-content-center">
+            <a class="btn btn-secondary mr-3" href="{% url 'deja:login' %}">Login</a>
+            <a class="btn btn-secondary" href="{% url 'deja:register' %}">Register</a>
+        </div>
+        {% endif %}
     </div>
 
 
