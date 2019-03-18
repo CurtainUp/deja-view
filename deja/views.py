@@ -65,7 +65,6 @@ def login_user(request):
 
     # If the request is a HTTP POST, try to pull out the relevant information.
     if request.method == "POST":
-        print(request.POST)
 
         # Use the built-in authenticate method to verify
         username = request.POST["username"]

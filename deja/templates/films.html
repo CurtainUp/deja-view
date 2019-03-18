@@ -6,7 +6,7 @@
 <div class="messages">
     {% for message in messages %}
     <div {% if message.tags %} class="alert alert-{{ message.tags }}" {% endif %}>
-            <strong>{{ message }}</strong>
+        <strong>{{ message }}</strong>
     </div>
     {% endfor %}
 </div>
@@ -24,27 +24,34 @@
 {% if most_recent %}
 <h5>Most Recent Credits</h5>
 <h6>Click the checkboxes to add a title to your watchlist</h6>
-    {% for credit in most_recent %}
-    <form method="post">
+{% for credit in most_recent %}
+<form method="post">
     {% csrf_token %}
-        <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="credit" value="{{ credit.title }}" id="{{ credit.title }}">
-                <label class="form-check-label" for="{{ credit.title }}">
-                {{ credit.title }}
-                </label>
-        </div>
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" name="credit" value="{{ credit.title }}"
+            id="{{ credit.title }}">
+        <label class="form-check-label" for="{{ credit.title }}">
+            {{ credit.title }}
+        </label>
+    </div>
     {% endfor %}
-        <button type="submit" class="btn btn-secondary" name="watchlist_add" value="watchlist_add"><i class="far fa-eye" alt="Move to watchlist"></i></button>
-    </form>
+    <div class="row d-flex justify-content-center mt-2">
+        <button type="submit" class="btn btn-secondary mr-5" name="watchlist_add" value="watchlist_add"><i
+                class="fas fa-plus"></i> <i class="far fa-eye" alt="Move to watchlist"></i></button>
+        <a href="https://www.imdb.com/name/nm{{ celebID }}" target="_blank" class="btn btn-secondary" role="button">See
+            All</a>
+    </div>
+</form>
 {% else %}
 <h5>No previous credits for this person</h5>
 {% endif %}
+<br />
 
-<a href="https://www.imdb.com/name/nm{{ celebID }}" target="_blank" class="btn btn-secondary mt-2" role="button">See
-    All</a>
 
-<form>
-    <button type="submit" class="btn btn-secondary" name="back">Back to Results</button>
-</form>
+<div class="row d-flex justify-content-center mt-2">
+    <form>
+        <button type="submit" class="btn btn-secondary" name="back">Back to Results</button>
+    </form>
+</div>
 
 {% endblock content %}

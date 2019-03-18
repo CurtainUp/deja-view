@@ -20,7 +20,7 @@
         {% csrf_token %}
         <button type="submit" name="deja" class="btn deja-history" id="deja-history" value="{{deja.id}}">
                 <img src="{{deja.img_url}}" id="deja-history" alt="{{deja.id}}">
-                <button type="submit" name="delete" value={{deja.id}}>Delete</button>
+                <button type="submit" class="btn btn-secondary" name="delete" value={{deja.id}}>Delete</button>
         </button>
         </form>
     </div>
