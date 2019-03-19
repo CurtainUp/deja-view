@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS `deja_note` (
 INSERT INTO `deja_note` VALUES (2,'',8);
 INSERT INTO `deja_note` VALUES (3,'aDfkjf',9);
 INSERT INTO `deja_note` VALUES (4,'There''s a sequel coming!!',10);
-INSERT INTO `deja_note` VALUES (5,'SUCCESS',11);
+INSERT INTO `deja_note` VALUES (5,'info',11);
 INSERT INTO `deja_note` VALUES (6,'gitchy gitchy ya ya da dadfdf',12);
 INSERT INTO `deja_note` VALUES (7,'she deserved the oscar',13);
 INSERT INTO `deja_note` VALUES (8,'Testing from an actual phone pic! It worked! But why is it flipped?',16);

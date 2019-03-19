@@ -178,14 +178,14 @@ def deja_results(request, deja_id):
 
                     new_result = Result(deja=deja, name=name, probability=probability)
                     new_result.save()
-                messages.success(request, "Deja Saved")
+                messages.info(request, "Deja Saved")
                 return HttpResponseRedirect(reverse("deja:index"))
 
         elif request.POST.get('delete'):
             deja_id = request.POST['delete']
             deja = Deja.objects.get(pk=deja_id)
             deja.delete()
-            messages.success(request, "Deja Deleted")
+            messages.info(request, "Deja Deleted")
             return HttpResponseRedirect(reverse("deja:index"))
 
         elif request.POST.get('back'):
@@ -198,6 +198,7 @@ def deja_results(request, deja_id):
                 watch_items = request.POST.getlist('credit')
 
                 for item in watch_items:
+                    # TODO: add logic for if title exists, do not add.
                     title = item
                     user_id = current_user.id
 
@@ -231,7 +232,7 @@ def note(request, deja_id):
             note.save()
 
             # Create confirmation note for user
-            messages.success(request, "Note Updated")
+            messages.info(request, "Note Updated")
             return HttpResponseRedirect(reverse("deja:deja_results", args=(deja_id,)))
 
     else:
@@ -247,7 +248,7 @@ def note(request, deja_id):
             new_note.save()
 
             # Create confirmation note for user
-            messages.success(request, "Note Saved")
+            messages.info(request, "Note Saved")
             return HttpResponseRedirect(reverse("deja:deja_results", args=(deja_id,)))
 
     return render(request, "note/note.html", {'note_form': note_form})
@@ -270,7 +271,7 @@ def history(request):
             deja_id = request.POST['delete']
             deja = Deja.objects.get(pk=deja_id)
             deja.delete()
-            messages.success(request, "Deja Deleted")
+            messages.info(request, "Deja Deleted")
             return HttpResponseRedirect(reverse('deja:history'))
 
     return render(request, "history.html", {'dejas': dejas})
@@ -290,21 +291,21 @@ def watchlist(request):
             watchlist_id = request.POST['remove']
             watchlist_item = Queue.objects.get(pk=watchlist_id)
             watchlist_item.delete()
-            messages.success(request, "Queue Updated")
+            messages.info(request, "Queue Updated")
             return HttpResponseRedirect(reverse('deja:watchlist'))
         elif request.POST.get('watch'):
             watchlist_id = request.POST['watch']
             watchlist_item = Queue.objects.get(pk=watchlist_id)
             watchlist_item.watched = False
             watchlist_item.save()
-            messages.success(request, "Queue Updated")
+            messages.info(request, "Queue Updated")
             return HttpResponseRedirect(reverse('deja:watchlist'))
         elif request.POST.get('watched'):
             watchlist_id = request.POST['watched']
             watchlist_item = Queue.objects.get(pk=watchlist_id)
             watchlist_item.watched = True
             watchlist_item.save()
-            messages.success(request, "Queue Updated")
+            messages.info(request, "Queue Updated")
             return HttpResponseRedirect(reverse('deja:watchlist'))
 
     return render(request, "watchlist.html", {'to_watch': to_watch, 'watched': watched})
