@@ -130,7 +130,6 @@ def deja_results(request, deja_id):
             if request.session.get('credits') and request.session['credits']['celeb_name'] == celeb_name:
                 return render(request, "films.html", request.session['credits'])
             else:
-                print("searching imdb")
                 # IMDPy fetch for result's filmography
                 ia = imdb.IMDb()
                 celeb = ia.search_person(celeb_name)
@@ -144,13 +143,17 @@ def deja_results(request, deja_id):
                 for value in filmography[0].values():
                     for film in value:
                         if len(most_recent) < 5:
+                            # Shows all commands available for film
                             # print(dir(film))
                             movieID = film.getID()
                             movie = ia.get_movie(movieID)
                             # print(movie.infoset2keys)
 
                             if movie.get('cover url'):
-                                most_recent.append(film)
+                                link = "http://www.imdb.com/title/tt" + movieID + "/"
+                                credit = {'link': link, 'title': film}
+                                most_recent.append(credit)
+                                print(most_recent)
                             # print("URL: ", ia.get_imdbURL(movie))
                             # IMDB url format
                             # http://www.imdb.com/title/tt3215824/
@@ -178,14 +181,14 @@ def deja_results(request, deja_id):
 
                     new_result = Result(deja=deja, name=name, probability=probability)
                     new_result.save()
-                messages.success(request, "Deja Saved")
+                messages.info(request, "Deja Saved")
                 return HttpResponseRedirect(reverse("deja:index"))
 
         elif request.POST.get('delete'):
             deja_id = request.POST['delete']
             deja = Deja.objects.get(pk=deja_id)
             deja.delete()
-            messages.success(request, "Deja Deleted")
+            messages.info(request, "Deja Deleted")
             return HttpResponseRedirect(reverse("deja:index"))
 
         elif request.POST.get('back'):
@@ -195,15 +198,28 @@ def deja_results(request, deja_id):
             current_user = request.user
             # if the credit has been checked, it is added to the database
             if 'credit' in request.POST:
-                watch_items = request.POST.getlist('credit')
+                watch_titles = request.POST.getlist('credit')
+                watch_links = request.POST.getlist('link')
+                credit = dict(zip(watch_titles, watch_links))
+                saved = False
 
-                for item in watch_items:
-                    title = item
-                    user_id = current_user.id
+                for name, url in credit.items():
+                    # checks if title already exists on watchlist, if so, it is not added.
+                    try:
+                        title = Queue.objects.get(title=name)
+                        messages.warning(request, f"{name} is already in your Queue")
+                    except:
+                        title = name
+                        link = url
+                        user_id = current_user.id
 
-                    queue_item = Queue(title=title, user_id=user_id)
-                    queue_item.save()
-            messages.info(request, "dejaQueue Updated")
+                        queue_item = Queue(title=title, link=link, user_id=user_id)
+                        queue_item.save()
+                        saved = True
+                if saved == True:
+                    messages.info(request, "dejaQueue Updated")
+            else:
+                messages.warning(request, "Please select a title")
             return render(request, "films.html", request.session['credits'])
 
     else:
@@ -231,7 +247,7 @@ def note(request, deja_id):
             note.save()
 
             # Create confirmation note for user
-            messages.success(request, "Note Updated")
+            messages.info(request, "Note Updated")
             return HttpResponseRedirect(reverse("deja:deja_results", args=(deja_id,)))
 
     else:
@@ -247,7 +263,7 @@ def note(request, deja_id):
             new_note.save()
 
             # Create confirmation note for user
-            messages.success(request, "Note Saved")
+            messages.info(request, "Note Saved")
             return HttpResponseRedirect(reverse("deja:deja_results", args=(deja_id,)))
 
     return render(request, "note/note.html", {'note_form': note_form})
@@ -270,7 +286,7 @@ def history(request):
             deja_id = request.POST['delete']
             deja = Deja.objects.get(pk=deja_id)
             deja.delete()
-            messages.success(request, "Deja Deleted")
+            messages.info(request, "Deja Deleted")
             return HttpResponseRedirect(reverse('deja:history'))
 
     return render(request, "history.html", {'dejas': dejas})
@@ -282,29 +298,26 @@ def watchlist(request):
     watched = Queue.objects.filter(user_id=current_user.id, watched=True)
 
     if request.method == 'POST':
-        # if request.POST.get('watch'):
-
-        # if request.POST.get('watched'):
 
         if request.POST.get('remove'):
             watchlist_id = request.POST['remove']
             watchlist_item = Queue.objects.get(pk=watchlist_id)
             watchlist_item.delete()
-            messages.success(request, "Queue Updated")
+            messages.info(request, "Queue Updated")
             return HttpResponseRedirect(reverse('deja:watchlist'))
         elif request.POST.get('watch'):
             watchlist_id = request.POST['watch']
             watchlist_item = Queue.objects.get(pk=watchlist_id)
             watchlist_item.watched = False
             watchlist_item.save()
-            messages.success(request, "Queue Updated")
+            messages.info(request, "Queue Updated")
             return HttpResponseRedirect(reverse('deja:watchlist'))
         elif request.POST.get('watched'):
             watchlist_id = request.POST['watched']
             watchlist_item = Queue.objects.get(pk=watchlist_id)
             watchlist_item.watched = True
             watchlist_item.save()
-            messages.success(request, "Queue Updated")
+            messages.info(request, "Queue Updated")
             return HttpResponseRedirect(reverse('deja:watchlist'))
 
     return render(request, "watchlist.html", {'to_watch': to_watch, 'watched': watched})

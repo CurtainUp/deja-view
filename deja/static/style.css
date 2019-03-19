@@ -19,7 +19,7 @@ body {
     background-repeat: no-repeat;
     background-color: var(--main-bg-color);
     font-family: 'Oswald', sans-serif;
-    background: radial-gradient(var(--main-bg-color), var(--main-bold-color));
+    background: radial-gradient(var(--main-bg-color), var(--main-bold-color)) fixed;
     position: relative;
 }
 
@@ -57,10 +57,20 @@ h1 {
     font-family: 'Fontdiner Swanky', cursive;
 }
 
+.alert {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 /* INDEX STYLING */
 #title {
     font-size: 4em;
     transform: translateY(30%);
+}
+
+#landing-msg {
+    transform: translateY(95%);
 }
 
 /* DEJA BUTTON */
@@ -75,7 +85,7 @@ button.deja-button {
     margin: 0;
 }
 
-.deja-button{
+.deja-button {
     background-image: -webkit-linear-gradient(top, #f4f1ee, #fff);
     background-image: linear-gradient(top, #f4f1ee, #fff);
     border-radius: 50%;
@@ -90,7 +100,7 @@ button.deja-button {
     top: 42%;
 }
 
-.deja-button:after{
+.deja-button:after {
     color:#e9e6e4;
     content: "";
     display: block;
@@ -102,7 +112,7 @@ button.deja-button {
     width: 30px;
 }
 
-.txt:after{
+.txt:after {
     content: "deja!";
     font-size: 4em;
     left: 16px;
@@ -115,31 +125,35 @@ button.deja-button {
     text-shadow:0px 0px 6px var(--main-bold-color);
 }
 
-.deja-button:hover{
+.deja-button:hover {
     background-image: -webkit-linear-gradient(top, #fff, #f4f1ee);
     background-image: linear-gradient(top, #fff, #f4f1ee);
     color:#0088cc;
 }
 
-.txt:hover:after{
+.txt:hover:after {
     color: var(--main-bold-color);
     text-shadow:0px 0px 6px var(--main-bold-color);
 }
 
-.deja-button:active{
+.deja-button:active {
     background-image: -webkit-linear-gradient(top, #efedec, #f7f4f4);
     background-image: linear-gradient(top, #efedec, #f7f4f4);
     box-shadow: 0 3px 5px 0 rgba(0,0,0,.4), inset 0px -3px 1px 1px rgba(204,198,197,.5);
 }
 
+.deja-button:focus {
+    outline: 0;
+}
+
 /* DEJA HISTORY STYLING */
 
-#deja-history {
+.deja-history {
     padding: 0px;
     justify-content: center;
 }
 
-#deja-history img {
+.deja-history img {
     max-height: 200px;
     width: 100%;
     /* background-position: center;
@@ -149,6 +163,8 @@ button.deja-button {
 
 .history-delete {
     justify-content: center;
+    width: 100%;
+    margin: 0;
 }
 /* END DEJA HISTORY STYLING */
 

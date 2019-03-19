@@ -7,7 +7,7 @@
     {% for message in messages %}
     <div {% if message.tags %} class="alert alert-{{ message.tags }}" {% endif %}>
         <strong>{{ message }}</strong>
-        <button class="btn btn-secondary">Go to dejaQueue</button>
+        <a class="btn btn-secondary" href="{% url 'deja:watchlist' %}">dejaQueue</a>
     </div>
     {% endfor %}
 </div>
@@ -31,8 +31,9 @@
     <div class="form-check">
         <input class="form-check-input" type="checkbox" name="credit" value="{{ credit.title }}"
             id="{{ credit.title }}">
+        <input type="hidden" name="link" value="{{ credit.link }}" disabled>
         <label class="form-check-label" for="{{ credit.title }}">
-            {{ credit.title }}
+                <a href="{{ credit.link }}" target="_blank">{{ credit.title }}</a>
         </label>
     </div>
     {% endfor %}
@@ -54,5 +55,6 @@
         <button type="submit" class="btn btn-secondary" name="back">Back to Results</button>
     </form>
 </div>
+<br />
 
 {% endblock content %}
