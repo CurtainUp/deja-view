@@ -32,7 +32,7 @@
         <input class="form-check-input" type="checkbox" name="credit" value="{{ credit.title }}"
             id="{{ credit.title }}">
         <label class="form-check-label" for="{{ credit.title }}">
-            {{ credit.title }}
+                <a href="{{ credit.link }}" target="_blank">{{ credit.title }}</a>
         </label>
     </div>
     {% endfor %}

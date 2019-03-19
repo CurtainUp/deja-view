@@ -130,7 +130,6 @@ def deja_results(request, deja_id):
             if request.session.get('credits') and request.session['credits']['celeb_name'] == celeb_name:
                 return render(request, "films.html", request.session['credits'])
             else:
-                print("searching imdb")
                 # IMDPy fetch for result's filmography
                 ia = imdb.IMDb()
                 celeb = ia.search_person(celeb_name)
@@ -144,13 +143,17 @@ def deja_results(request, deja_id):
                 for value in filmography[0].values():
                     for film in value:
                         if len(most_recent) < 5:
+                            # Shows all commands available for film
                             # print(dir(film))
                             movieID = film.getID()
                             movie = ia.get_movie(movieID)
                             # print(movie.infoset2keys)
 
                             if movie.get('cover url'):
-                                most_recent.append(film)
+                                link = "http://www.imdb.com/title/tt" + movieID + "/"
+                                credit = {'link': link, 'title': film}
+                                most_recent.append(credit)
+                                print(most_recent)
                             # print("URL: ", ia.get_imdbURL(movie))
                             # IMDB url format
                             # http://www.imdb.com/title/tt3215824/
@@ -196,6 +199,7 @@ def deja_results(request, deja_id):
             # if the credit has been checked, it is added to the database
             if 'credit' in request.POST:
                 watch_items = request.POST.getlist('credit')
+                print(watch_items)
                 saved = False
 
                 for item in watch_items:
@@ -205,9 +209,10 @@ def deja_results(request, deja_id):
                         messages.warning(request, f"{item} is already in your Queue")
                     except:
                         title = item
+                        link = item.link
                         user_id = current_user.id
 
-                        queue_item = Queue(title=title, user_id=user_id)
+                        queue_item = Queue(title=title, link=link, user_id=user_id)
                         queue_item.save()
                         saved = True
                 if saved == True:
@@ -292,9 +297,6 @@ def watchlist(request):
     watched = Queue.objects.filter(user_id=current_user.id, watched=True)
 
     if request.method == 'POST':
-        # if request.POST.get('watch'):
-
-        # if request.POST.get('watched'):
 
         if request.POST.get('remove'):
             watchlist_id = request.POST['remove']

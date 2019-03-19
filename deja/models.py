@@ -37,6 +37,7 @@ class Note(models.Model):
 class Queue(models.Model):
     '''A movie or film on the user's watchlist'''
     title = models.CharField(max_length=100, blank=False)
+    link = models.CharField(max_length=100, blank=False)
     watched = models.BooleanField(default=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
