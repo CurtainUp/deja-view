@@ -77,7 +77,21 @@
     </div>
     {% endif %}
 
+    <!-- Add jQuery -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
 
+    <!-- Gets credit link values from hidden input fields on films.html -->
+    <script>
+        $("input:checkbox").click( (e) => {
+            if (e.target.checked) {
+                e.target.nextElementSibling.removeAttribute("disabled")
+            } else {
+                e.target.nextElementSibling.setAttribute("disabled", "disabled")
+            }
+        })
+    </script>
 
     <!-- Script for loading animation -->
     <script type="text/javascript">
@@ -100,11 +114,6 @@
             }
         }
     </script>
-
-    <!-- Add jQuery -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
 
     <!-- Script that connects page to Firebase -->
     <script src="https://www.gstatic.com/firebasejs/5.8.5/firebase.js"></script>

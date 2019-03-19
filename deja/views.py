@@ -198,18 +198,19 @@ def deja_results(request, deja_id):
             current_user = request.user
             # if the credit has been checked, it is added to the database
             if 'credit' in request.POST:
-                watch_items = request.POST.getlist('credit')
-                print(watch_items)
+                watch_titles = request.POST.getlist('credit')
+                watch_links = request.POST.getlist('link')
+                credit = dict(zip(watch_titles, watch_links))
                 saved = False
 
-                for item in watch_items:
-                    # checks if title already exists on watchlist, and does not add.
+                for name, url in credit.items():
+                    # checks if title already exists on watchlist, if so, it is not added.
                     try:
-                        title = Queue.objects.get(title=item)
-                        messages.warning(request, f"{item} is already in your Queue")
+                        title = Queue.objects.get(title=name)
+                        messages.warning(request, f"{name} is already in your Queue")
                     except:
-                        title = item
-                        link = item.link
+                        title = name
+                        link = url
                         user_id = current_user.id
 
                         queue_item = Queue(title=title, link=link, user_id=user_id)
