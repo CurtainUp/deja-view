@@ -196,15 +196,24 @@ def deja_results(request, deja_id):
             # if the credit has been checked, it is added to the database
             if 'credit' in request.POST:
                 watch_items = request.POST.getlist('credit')
+                saved = False
 
                 for item in watch_items:
-                    # TODO: add logic for if title exists, do not add.
-                    title = item
-                    user_id = current_user.id
+                    # checks if title already exists on watchlist, and does not add.
+                    try:
+                        title = Queue.objects.get(title=item)
+                        messages.warning(request, f"{item} is already in your Queue")
+                    except:
+                        title = item
+                        user_id = current_user.id
 
-                    queue_item = Queue(title=title, user_id=user_id)
-                    queue_item.save()
-            messages.info(request, "dejaQueue Updated")
+                        queue_item = Queue(title=title, user_id=user_id)
+                        queue_item.save()
+                        saved = True
+                if saved == True:
+                    messages.info(request, "dejaQueue Updated")
+            else:
+                messages.warning(request, "Please select a title")
             return render(request, "films.html", request.session['credits'])
 
     else:

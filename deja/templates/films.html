@@ -7,7 +7,7 @@
     {% for message in messages %}
     <div {% if message.tags %} class="alert alert-{{ message.tags }}" {% endif %}>
         <strong>{{ message }}</strong>
-        <a class="btn btn-secondary mr-3" href="{% url 'deja:watchlist' %}">dejaQueue</a>
+        <a class="btn btn-secondary" href="{% url 'deja:watchlist' %}">dejaQueue</a>
     </div>
     {% endfor %}
 </div>
@@ -54,5 +54,6 @@
         <button type="submit" class="btn btn-secondary" name="back">Back to Results</button>
     </form>
 </div>
+<br />
 
 {% endblock content %}

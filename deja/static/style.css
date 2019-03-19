@@ -57,6 +57,12 @@ h1 {
     font-family: 'Fontdiner Swanky', cursive;
 }
 
+.alert {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 /* INDEX STYLING */
 #title {
     font-size: 4em;
