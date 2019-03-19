@@ -28,7 +28,7 @@
     <div id="watchlist" class="tab-pane active">
         {% if to_watch %}
         {% for item in to_watch %}
-        <div class="container">
+        <!-- <div class="container"> -->
             <div class="row">
                 <div class="col-9">
                     <p>{{ item.title }}</p>
@@ -43,7 +43,7 @@
                     </div>
                 </form>
             </div>
-        </div>
+        <!-- </div> -->
         {% endfor %}
         {% else %}
         <p>No items in your watchlist</p>
@@ -52,7 +52,6 @@
     <div id="watched" class="tab-pane fade">
         {% if watched %}
         {% for item in watched %}
-        <div class="container">
             <div class="row">
                 <div class="col-9">
                     <p>{{ item.title }}</p>
@@ -67,7 +66,6 @@
                     </div>
                 </form>
             </div>
-        </div>
         {% endfor %}
         {% else %}
         <p>No watched items</p>
