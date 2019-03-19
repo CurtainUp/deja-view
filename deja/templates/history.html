@@ -14,12 +14,12 @@
 {% endif %}
 
 {% for deja in dejas %}
-<div class="container-fluid" id="deja-history">
-    <div class="row" id="deja-history">
+<div class="container-fluid deja-history">
+    <div class="row deja-history">
         <form method="post">
         {% csrf_token %}
-        <button type="submit" name="deja" class="btn deja-history" id="deja-history" value="{{deja.id}}">
-                <img src="{{deja.img_url}}" id="deja-history" alt="{{deja.id}}">
+        <button type="submit" name="deja" class="btn deja-history" value="{{deja.id}}">
+                <img src="{{deja.img_url}}" class="deja-history" alt="{{deja.id}}">
             </button>
         <div class="row history-delete">
         <button type="submit" class="btn btn-secondary" name="delete" value={{deja.id}}>Delete</button>

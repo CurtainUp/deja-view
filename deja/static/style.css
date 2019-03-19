@@ -63,6 +63,10 @@ h1 {
     transform: translateY(30%);
 }
 
+#landing-msg {
+    transform: translateY(95%);
+}
+
 /* DEJA BUTTON */
 
 #deja-link {
@@ -138,12 +142,12 @@ button.deja-button {
 
 /* DEJA HISTORY STYLING */
 
-#deja-history {
+.deja-history {
     padding: 0px;
     justify-content: center;
 }
 
-#deja-history img {
+.deja-history img {
     max-height: 200px;
     width: 100%;
     /* background-position: center;
@@ -153,6 +157,8 @@ button.deja-button {
 
 .history-delete {
     justify-content: center;
+    width: 100%;
+    margin: 0;
 }
 /* END DEJA HISTORY STYLING */
 

@@ -45,7 +45,7 @@
             <h1 id="title">dejaView</h1>
         </div>
         {% if not user.is_authenticated %}
-        <div class="row justify-content-center">
+        <div class="row justify-content-center" id="landing-msg">
             <h4>Login or create an account to begin</h4>
         </div>
         {% endif %}
@@ -71,7 +71,7 @@
         <a class="btn btn-secondary" href="{% url 'deja:logout' %}">Logout</a>
     </div>
     {% else %}
-    <div class="row justify-content-center">
+    <div class="footer row justify-content-center">
         <a class="btn btn-secondary mr-3" href="{% url 'deja:login' %}">Login</a>
         <a class="btn btn-secondary" href="{% url 'deja:register' %}">Register</a>
     </div>
