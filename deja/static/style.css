@@ -19,7 +19,7 @@ body {
     background-repeat: no-repeat;
     background-color: var(--main-bg-color);
     font-family: 'Oswald', sans-serif;
-    background: radial-gradient(var(--main-bg-color), var(--main-bold-color));
+    background: radial-gradient(var(--main-bg-color), var(--main-bold-color)) fixed;
     position: relative;
 }
 
