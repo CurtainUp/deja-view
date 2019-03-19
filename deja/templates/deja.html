@@ -2,19 +2,19 @@
 
 {% block content %}
 <h1>Deja</h1>
-<form method="post" enctype="multipart/form-data">
+<form method="post" enctype="multipart/form-data" id="deja-form">
     {% csrf_token %}
-    <h6>Upload a screenshot and click the button below to get your matches</h6>
+    <h6>Upload a screenshot and click the button below to deja!</h6>
     <div class="row justify-content-center">
         <input type="file" class="btn btn-secondary" name="image" id="image">
         <input type="hidden" name="url" id="url">
-        <button type="button" class="btn btn-secondary" onclick="uploadimage()">Upload</button>
+        <!-- <button type="button" class="btn btn-secondary" onclick="uploadImage()">Upload</button> -->
         <br />
     </div>
     <br />
+</form>
     <div class="row justify-content-center">
-        <button type="submit" class="deja-button txt"></button>
+        <button type="button" class="deja-button txt" id="deja-submit" onclick="uploadImage()"></button>
     </div>
 
-</form>
 {% endblock content %}
