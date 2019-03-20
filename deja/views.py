@@ -29,9 +29,11 @@ firebase = pyrebase.initialize_app(config)
 
 # -----VIEWS----- #
 
+
 def index(request):
     '''View for landing page'''
     return render(request, "index.html")
+
 
 def register_user(request):
     '''Handles the creation of a new user for authentication'''
@@ -64,6 +66,7 @@ def register_user(request):
         register_template = "register.html"
         return render(request, register_template, {"user_form": user_form})
 
+
 def login_user(request):
     '''Handles the login of a registered user for authentication'''
 
@@ -93,12 +96,14 @@ def login_user(request):
 
     return render(request, "login.html", context)
 
+
 @login_required
 def logout_user(request):
     logout(request)
 
     # Take the user back to the homepage.
     return HttpResponseRedirect("/")
+
 
 @login_required
 def deja(request):
@@ -118,9 +123,10 @@ def deja(request):
 
     return render(request, "deja.html")
 
+
 @login_required
 def deja_results(request, deja_id):
-    ''' View for user to view Actor matches and view that performer's most recent projects '''
+    ''' View for celeb matches and that performer's most recent projects '''
 
     # ----- FACIAL RECOGNITION -----
 
@@ -206,6 +212,7 @@ def deja_results(request, deja_id):
         elif request.POST.get("note"):
             return HttpResponseRedirect(reverse("deja:note", args=(deja_id,)))
 
+        # If user clicks trash button, deletes current deja
         elif request.POST.get('delete'):
             deja_id = request.POST['delete']
             deja = Deja.objects.get(pk=deja_id)
@@ -213,14 +220,20 @@ def deja_results(request, deja_id):
             messages.info(request, "Deja Deleted")
             return HttpResponseRedirect(reverse("deja:index"))
 
+        #----- FILMS.HTML POSTS -----#
+
+        # Takes user back to match results
         elif request.POST.get('back'):
             return HttpResponseRedirect(reverse("deja:deja_results", args=(deja_id,)))
 
+        # Adds title to user's dejaQueue
         elif request.POST.get('watchlist_add'):
             current_user = request.user
-            # if the credit has been checked, it is added to the database
+
+            # If a credit has been checked, it is added to the database
             if 'credit' in request.POST:
                 watch_titles = request.POST.getlist('credit')
+                # Grabs urls from hidden input
                 watch_links = request.POST.getlist('link')
                 credit = dict(zip(watch_titles, watch_links))
                 saved = False
@@ -241,6 +254,7 @@ def deja_results(request, deja_id):
                 if saved == True:
                     messages.info(request, "dejaQueue Updated")
             else:
+                # Feedback if button is clicked without any selections
                 messages.warning(request, "Please select a title")
             return render(request, "films.html", request.session['credits'])
 
@@ -248,9 +262,11 @@ def deja_results(request, deja_id):
 
         return render(request, "deja_results.html", {'results': results, 'uploaded_img': uploaded_img, 'deja_id': deja_id})
 
+
 @login_required
 def note(request, deja_id):
     '''View to create or edit a note attached to a Deja'''
+
     # Call to database to see if a note is already attached to the current Deja
     note = Note.objects.filter(deja_id=deja_id).exists()
 
@@ -288,7 +304,8 @@ def note(request, deja_id):
             messages.info(request, "Note Saved")
             return HttpResponseRedirect(reverse("deja:deja_results", args=(deja_id,)))
 
-    return render(request, "note/note.html", {'note_form': note_form})
+    return render(request, "note.html", {'note_form': note_form})
+
 
 @login_required
 def history(request):
@@ -296,16 +313,13 @@ def history(request):
     current_user = request.user
     # Grabs all dejas created by the current user
     dejas = Deja.objects.filter(user_id=current_user.id).order_by('-id')
-    # TODO: Get matching result entry for template
-    # for deja in dejas:
-    #     print(deja.result.name)
-    # Get highest probability match for alt tag
 
     if request.method == 'POST':
         # Pulls the clicked deja's id to pass to deja_results view
         if request.POST.get('deja'):
             deja_id = request.POST['deja']
             return HttpResponseRedirect(reverse("deja:deja_results", args=(deja_id,)))
+        # Deletes the attached deja
         elif request.POST.get('delete'):
             deja_id = request.POST['delete']
             deja = Deja.objects.get(pk=deja_id)
@@ -315,20 +329,25 @@ def history(request):
 
     return render(request, "history.html", {'dejas': dejas})
 
+
 @login_required
 def watchlist(request):
     current_user = request.user
+
+    # Sorts watchlist into two categories for template
     to_watch = Queue.objects.filter(user_id=current_user.id, watched=False)
     watched = Queue.objects.filter(user_id=current_user.id, watched=True)
 
     if request.method == 'POST':
-
+        # Delete a title from the queue
         if request.POST.get('remove'):
             watchlist_id = request.POST['remove']
             watchlist_item = Queue.objects.get(pk=watchlist_id)
             watchlist_item.delete()
             messages.info(request, "Queue Updated")
             return HttpResponseRedirect(reverse('deja:watchlist'))
+
+        # Mark a title as not yet watched
         elif request.POST.get('watch'):
             watchlist_id = request.POST['watch']
             watchlist_item = Queue.objects.get(pk=watchlist_id)
@@ -336,6 +355,8 @@ def watchlist(request):
             watchlist_item.save()
             messages.info(request, "Queue Updated")
             return HttpResponseRedirect(reverse('deja:watchlist'))
+
+        # Mark a title as watched
         elif request.POST.get('watched'):
             watchlist_id = request.POST['watched']
             watchlist_item = Queue.objects.get(pk=watchlist_id)

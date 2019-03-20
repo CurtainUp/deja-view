@@ -1,0 +1,13 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<h1>Add a note</h1>
+<form action="{% url 'deja:note' request.resolver_match.kwargs.deja_id %}"  method=post>
+    {% csrf_token %}
+    {{ note_form.as_p }}
+    <div class="row">
+        <a href="{{request.META.HTTP_REFERER}}"><button class="btn btn-secondary ml-3">Cancel</button></a>
+    <input type="submit" class="btn btn-secondary mr-2 ml-3" value="Save" />
+</form>
+</div>
+{% endblock content %}
