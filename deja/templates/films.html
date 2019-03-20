@@ -25,6 +25,7 @@
 {% if most_recent %}
 <h5>Most Recent Credits</h5>
 <h6>Click the checkboxes to add a title to your watchlist</h6>
+
 {% for credit in most_recent %}
 <form method="post">
     {% csrf_token %}

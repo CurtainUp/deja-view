@@ -153,6 +153,20 @@ button.deja-button {
     justify-content: center;
 }
 
+.history-item {
+    position: relative;
+}
+
+.text-block {
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    background-color: rgba(0, 0, 0, .5);
+    color: white;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
 .deja-history img {
     max-height: 200px;
     width: 100%;
@@ -173,6 +187,10 @@ button.deja-button {
 .uploaded {
     display: block;
     margin: 0 auto;
+}
+
+.empty-history {
+    transform: translateY(90%);
 }
 
 @media(max-width: 768px) {

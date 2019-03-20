@@ -121,6 +121,22 @@ def deja_results(request, deja_id):
     uploaded_img = Deja.objects.get(pk=deja_id).img_url
     # Submits url to Sight Engine API
     results = get_celebs(uploaded_img)
+    print(results[0])
+
+    # Saves top match to Results
+    if results:
+        try:
+            top_match = Result.objects.get(pk=deja_id)
+            print("result already logged: ", top_match)
+        except:
+            deja = Deja.objects.get(pk=deja_id)
+            name = results[0]['name']
+            probability = results[0]['prob']
+
+            new_result = Result(deja=deja, name=name, probability=probability)
+            new_result.save()
+
+
 
     if request.method == 'POST':
 
@@ -143,22 +159,17 @@ def deja_results(request, deja_id):
                 for value in filmography[0].values():
                     for film in value:
                         if len(most_recent) < 5:
-                            # Shows all commands available for film
-                            # print(dir(film))
                             movieID = film.getID()
                             movie = ia.get_movie(movieID)
-                            # print(movie.infoset2keys)
+                            film_title = film['title']
 
                             if movie.get('cover url'):
+                                # Trims () that appears at the ends of upcoming projects
+                                if film_title.endswith("()"):
+                                    film_title = film_title[:-3]
                                 link = "http://www.imdb.com/title/tt" + movieID + "/"
-                                credit = {'link': link, 'title': film}
+                                credit = {'link': link, 'title': film_title}
                                 most_recent.append(credit)
-                                print(most_recent)
-                            # print("URL: ", ia.get_imdbURL(movie))
-                            # IMDB url format
-                            # http://www.imdb.com/title/tt3215824/
-
-                                # print(movie.get_fullsizeURL())
 
                 # Returns url of actor headshot OR default message if none available!
                 no_headshot = "No headshot available"
@@ -171,18 +182,6 @@ def deja_results(request, deja_id):
 
         elif request.POST.get("note"):
             return HttpResponseRedirect(reverse("deja:note", args=(deja_id,)))
-
-        elif request.POST.get("save_deja"):
-            if results:
-                for celeb in results:
-                    deja = Deja.objects.get(pk=Deja.objects.latest('created').id)
-                    name = celeb['name']
-                    probability = celeb['prob']
-
-                    new_result = Result(deja=deja, name=name, probability=probability)
-                    new_result.save()
-                messages.info(request, "Deja Saved")
-                return HttpResponseRedirect(reverse("deja:index"))
 
         elif request.POST.get('delete'):
             deja_id = request.POST['delete']
@@ -274,7 +273,9 @@ def history(request):
     current_user = request.user
     # Grabs all dejas created by the current user
     dejas = Deja.objects.filter(user_id=current_user.id).order_by('-id')
-
+    # TODO: Get matching result entry for template
+    # for deja in dejas:
+    #     print(deja.result.name)
     # Get highest probability match for alt tag
 
     if request.method == 'POST':

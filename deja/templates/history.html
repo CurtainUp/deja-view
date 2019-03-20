@@ -7,27 +7,41 @@
 <div class="messages">
     {% for message in messages %}
     <div {% if message.tags %} class="alert alert-{{ message.tags }}" {% endif %}>
-            <strong>{{ message }}</strong>
+        <strong>{{ message }}</strong>
     </div>
     {% endfor %}
 </div>
 {% endif %}
 
+{% if dejas %}
 {% for deja in dejas %}
 <div class="container-fluid deja-history">
     <div class="row deja-history">
         <form method="post">
-        {% csrf_token %}
-        <button type="submit" name="deja" class="btn deja-history" value="{{deja.id}}">
-                <img src="{{deja.img_url}}" class="deja-history" alt="{{deja.id}}">
-            </button>
-        <div class="row history-delete">
-        <button type="submit" class="btn btn-secondary" name="delete" value={{deja.id}}>Delete</button>
-        </div>
+            {% csrf_token %}
+            <div class="history-item">
+                <button type="submit" name="deja" class="btn deja-history" value="{{deja.id}}">
+                    <img src="{{deja.img_url}}" class="deja-history" alt="{{deja.id}}">
+                    <div class="text-block">
+                        <h4> {{ deja.result.name }} &nbsp {% widthratio deja.result.probability 1 100 %}%</h4>
+                    </div>
+                </button>
+            </div>
+            <div class="row history-delete">
+                <button type="submit" class="btn btn-secondary" name="delete" value={{deja.id}}>Delete</button>
+            </div>
         </form>
     </div>
 </div>
 {% endfor %}
+{% else %}
+<h6 class="empty-history">You haven't made any dejas yet! Click the button below to get started.</h6>
+<div class="row d-flex flex-fill justify-content-center">
+    <a id="deja-link" href="{% url 'deja:deja' %}">
+        <div class="deja-button txt" alt="A button that will begin a deja."></div>
+    </a>
+</div>
+{% endif %}
 <br />
 
 {% endblock content %}
