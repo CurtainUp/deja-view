@@ -56,6 +56,7 @@ Facial recognition is performed via the Sightengine REST API. You must create an
 
 ### pyrebase
 A simple python wrapper for the Firebase API.
+
 [GitHub Repo](https://github.com/thisbejim/Pyrebase)
 
 To learn more about how to integrate Firebase with Django, I highly recommend starting with [this video](https://www.hackanons.com/2018/03/python-django-with-google-firebase.html).
