@@ -1,0 +1,62 @@
+// Example response
+
+{
+    "status": "success",
+    "request": {
+        "id": "req_0MtAXnNu1zHLs6CZXMVaw",
+        "timestamp": 1494409587.8202,
+        "operations": 1
+    },
+    "faces": [
+        {
+            "x1": 0.293,
+            "y1": 0.1491,
+            "x2": 0.7035,
+            "y2": 0.8158,
+            "features": {
+                "left_eye": {
+                    "x": 0.61,
+                    "y": 0.4378
+                },
+                "right_eye": {
+                    "x": 0.43,
+                    "y": 0.4016
+                },
+                "nose_tip": {
+                    "x": 0.5167,
+                    "y": 0.5663
+                },
+                "left_mouth_corner": {
+                    "x": 0.5667,
+                    "y": 0.6787
+                },
+                "right_mouth_corner": {
+                    "x": 0.4133,
+                    "y": 0.6466
+                }
+            },
+            "celebrity": [
+                {
+                    "name": "Daniel Craig",
+                    "prob": 0.99
+                },
+                {
+                    "name": "Dean Wareham",
+                    "prob": 0.06
+                },
+                {
+                    "name": "Ben Daniels",
+                    "prob": 0.06
+                },
+                {
+                    "name": "Graham Fellows",
+                    "prob": 0.05
+                }
+            ]
+        }
+    ],
+    "media": {
+        "id": "med_0MtAtt9ud8Jaz93Ohb9UE",
+        "uri": "https://sightengine.com/assets/img/examples/example-craig-300.jpg"
+    }
+}
