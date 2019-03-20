@@ -17,7 +17,7 @@ class Result(models.Model):
     '''A returned facial match'''
     name = models.CharField(max_length=100, blank=False)
     probability = models.FloatField(blank=False)
-    deja = models.ForeignKey(Deja, on_delete=models.CASCADE)
+    deja = models.OneToOneField(Deja, on_delete=models.CASCADE)
 
     def __str__(self):
         '''string method that returns name and probability of result'''
