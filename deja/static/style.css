@@ -193,10 +193,8 @@ button.deja-button {
     transform: translateY(90%);
 }
 
-@media(max-width: 768px) {
-    button.full-width {
-        width: 100%;
-    }
+button.full-width {
+    width: 100%;
 }
 
 /* END DEJA RESULT STYLING */
