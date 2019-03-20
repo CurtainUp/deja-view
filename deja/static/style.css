@@ -54,6 +54,7 @@ h1 {
 }
 
 #home  {
+    margin: 5px 0px;
     font-family: 'Fontdiner Swanky', cursive;
 }
 
@@ -193,10 +194,8 @@ button.deja-button {
     transform: translateY(90%);
 }
 
-@media(max-width: 768px) {
-    button.full-width {
-        width: 100%;
-    }
+button.full-width {
+    width: 100%;
 }
 
 /* END DEJA RESULT STYLING */
