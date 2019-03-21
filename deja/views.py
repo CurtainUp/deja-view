@@ -11,6 +11,7 @@ import pyrebase
 from deja.api.sightengine import get_celebs
 import imdb
 from imdb.Person import Person
+from heapq import nlargest
 
 # -----Firebase key and integration of pyrebase----- #
 
@@ -141,7 +142,7 @@ def deja_results(request, deja_id):
     if results:
         try:
             # Checks if result has already been saved
-            top_match = Result.objects.get(pk=deja_id)
+            top_match = Result.objects.get(deja=deja_id)
         except:
             # If no instance, create top match entry in Results
             deja = Deja.objects.get(pk=deja_id)
@@ -178,12 +179,13 @@ def deja_results(request, deja_id):
                 for value in filmography[0].values():
                     for film in value:
                         if len(most_recent) < 5:
+                            # print(dir(film))
                             movieID = film.getID()
                             movie = ia.get_movie(movieID)
                             film_title = film['title']
 
-                            # Only grabs movies with a poster image to help filter out upcoming projects
-                            if movie.get('cover url'):
+                            # Only grabs movies with user rating votes to help filter out upcoming projects
+                            if movie.get('votes'):
                                 # Trims () that appears at the ends of upcoming projects
                                 if film_title.endswith("()"):
                                     film_title = film_title[:-3]
