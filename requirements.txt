@@ -26,7 +26,7 @@ python-jwt==3.2.4
 pytz==2018.9
 requests==2.21.0
 requests-toolbelt==0.9.1
-rsa==4.0
+rsa==4.7
 sightengine==1.4.0
 six==1.12.0
 terminaltables==3.1.0
